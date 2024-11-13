@@ -1,0 +1,151 @@
+//reset slick slider css
+.slick-prev {
+  border: 2px solid #d7d7d7 !important;
+  left: -15px !important;
+  z-index: 1000 !important;
+  height: 48px !important;
+  width: 44px !important;
+  background: #fff !important;
+  &:hover {
+    background: #eceaea !important;
+  }
+}
+
+.slick-next {
+  border: 2px solid #d7d7d7 !important;
+  right: -15px !important;
+  height: 48px !important;
+  width: 44px !important;
+  background: #fff !important;
+  &:hover {
+    background: #eceaea !important;
+  }
+}
+
+.slick-next:before {
+  font-family: FontAwesome !important;
+  color: grey !important;
+}
+
+.slick-prev:before {
+  font-family: FontAwesome !important;
+  color: grey !important;
+}
+
+.section-share {
+  &.section-specialty,
+  &.section-outstanding-doctor {
+    background: #f5f5f5;
+  }
+  &.section-about {
+    padding: 0 120px;
+    height: 550px !important;
+    border-top: 2px solid #f5f5f5;
+    border-bottom: 2px solid #f5f5f5;
+    .section-about-header {
+      padding: 20px 10px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .section-about-content {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+      .content-left {
+        width: 60%;
+      }
+      .content-right {
+        width: 40%;
+        p {
+          text-align: justify;
+          font-style: italic;
+          padding-top: 20px;
+        }
+      }
+    }
+  }
+  .section-body {
+    .section-customize {
+      .bg-image {
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: #eee;
+        height: 220px;
+        width: 350px;
+        &.section-specialty {
+          background-image: url("../../assets/specialty/KianaChief.png");
+        }
+        &.section-medical-facility {
+          background-image: url("../../assets/medical-facility/TwoKiana.jpg");
+        }
+        &.section-outstanding-doctor {
+          width: 130px;
+          height: 130px;
+          border-radius: 50%;
+          background-image: url("../../assets/outstanding-doctor/KianaNguoiTot.png");
+        }
+        &.section-handbook {
+          background-image: url("../../assets/handbook/kiana-handbook.png");
+        }
+      }
+    }
+  }
+}
+
+.section-share {
+  height: 380px;
+
+  .section-container {
+    margin: 0 120px;
+    display: flex;
+    flex-direction: column;
+    .section-header {
+      height: 46px;
+      margin-bottom: 33px;
+      padding-top: 22px;
+      .title-section {
+        font-size: 24px;
+        font-weight: 600;
+      }
+      .btn-section {
+        float: right;
+        display: block;
+        padding: 10px 15px;
+        border: none;
+        background: #ebebeb;
+        outline: none;
+        cursor: pointer;
+        text-transform: uppercase;
+        &:hover {
+          color: #fff;
+          background: #f7d800;
+        }
+      }
+    }
+  }
+}
+
+.section-outstanding-doctor {
+  .outer-bg {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+  }
+  .section-customize {
+    padding: 0 10px;
+    .customize-border {
+      padding: 20px;
+      border: 1px solid violet;
+    }
+  }
+}
+
+.home-footer {
+  text-align: center;
+  padding-top: 10px;
+  height: 40px;
+  a {
+    text-decoration: unset;
+  }
+}

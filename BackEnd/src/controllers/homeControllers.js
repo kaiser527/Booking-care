@@ -8,7 +8,6 @@ const {
 } = require("../services/CRUDService");
 
 const getHomePage = async (req, res) => {
-  //process data
   try {
     const data = await db.User.findAll();
     res.render("home.ejs", { data: JSON.stringify(data) });

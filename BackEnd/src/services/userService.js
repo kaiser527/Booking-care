@@ -14,7 +14,7 @@ const handleUserLogin = (email, password) => {
         const user = await db.User.findOne({
           //kiem tra user co ton tai bang email truyen vao co ton tai trong db kh
           where: { email: email },
-          attributes: ["email", "roleId", "password"], //khi login thanh cong tra ra user nhung chi co 3 truong la email,roleId,password
+          attributes: ["email", "roleId", "password", "fullName"], //khi login thanh cong tra ra user nhung chi co 3 truong la email,roleId,password
           raw: true,
         });
         if (user) {
@@ -208,10 +208,35 @@ const updateUserData = (data) => {
   });
 };
 
+const getAllCodeService = (typeInput) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!typeInput) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required Parameters !",
+        });
+      } else {
+        let res = {};
+        let allcode = await db.Allcode.findAll({
+          where: { type: typeInput },
+        });
+        //gan them key vao res
+        res.errCode = 0;
+        res.data = allcode;
+        resolve(res);
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   handleUserLogin,
   getAllUsers,
   createNewUser,
   deleteUserById,
   updateUserData,
+  getAllCodeService,
 };

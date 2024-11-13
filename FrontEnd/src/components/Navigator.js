@@ -27,9 +27,9 @@ class Menu extends Component {
       <li
         className={
           "menu" +
-          (hasSubMenu ? "has-sub-menu" : "") +
+          (hasSubMenu ? " has-sub-menu" : "") +
           "" +
-          (active ? "active" : "")
+          (active ? " active" : "")
         }
       >
         {hasSubMenu ? (

@@ -4,8 +4,10 @@ const {
   createNewUser,
   deleteUserById,
   updateUserData,
+  getAllCodeService,
 } = require("../services/userService");
 
+//auth
 const handleLogin = async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -29,6 +31,7 @@ const handleLogin = async (req, res) => {
   }); //neu kh co loi thi tra ve ma 200 con co loi se tra ve ma 500,404,...
 };
 
+//users
 const handleGetAllUsers = async (req, res) => {
   const id = req.query.id; //All, id
   if (!id) {
@@ -69,10 +72,25 @@ const handleDeleteUser = async (req, res) => {
   return res.status(200).json(message);
 };
 
+//all code
+const getAllCode = async (req, res) => {
+  try {
+    const data = await getAllCodeService(req.query.type);
+    return res.status(200).json(data);
+  } catch (e) {
+    console.log("Get all code error:", e);
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: "Error from server",
+    }); //khi kh ket noi toi db thi chay vao case nay
+  }
+};
+
 module.exports = {
   handleLogin,
   handleGetAllUsers,
   handleCreateNewUser,
   handleDeleteUser,
   handleEditUser,
+  getAllCode,
 };
