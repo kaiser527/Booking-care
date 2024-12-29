@@ -49,13 +49,12 @@
     }
     .section-about-content {
       display: flex;
-      gap: 15px;
       width: 100%;
       .content-left {
-        width: 60%;
+        width: 55%;
       }
       .content-right {
-        width: 40%;
+        width: 45%;
         p {
           text-align: justify;
           font-style: italic;

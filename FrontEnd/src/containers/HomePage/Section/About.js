@@ -12,8 +12,8 @@ class About extends Component {
         <div className="section-about-content">
           <div className="content-left">
             <iframe
-              width="85%"
-              height="450"
+              width="80%"
+              height="400"
               src="https://www.youtube.com/embed/VeWCBissZy8"
               title="Phim ngắn của Honkai Impact 3 - [Hành Trình Tốt Nghiệp]"
               frameBorder="0"

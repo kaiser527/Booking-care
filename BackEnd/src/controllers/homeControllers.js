@@ -21,8 +21,7 @@ const getCRUDPage = (req, res) => {
 };
 
 const postCRUD = async (req, res) => {
-  const message = await createNewUser(req.body);
-  console.log(message);
+  await createNewUser(req.body);
   return res.send("post crud from server");
 };
 
@@ -36,8 +35,6 @@ const getEditCRUD = async (req, res) => {
   if (userId) {
     const userData = await getUserInfoById(userId);
     //check user data not found
-
-    console.log(">>>check Id", userData);
     return res.render("edit-crud.ejs", { user: userData });
   } else {
     return res.send("Users not found !");

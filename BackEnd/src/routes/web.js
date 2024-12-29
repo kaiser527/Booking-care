@@ -34,7 +34,7 @@ router.post("/api/create-new-user", handleCreateNewUser);
 router.put("/api/edit-user", handleEditUser);
 router.delete("/api/delete-user", handleDeleteUser);
 
-//all code
-router.get("/allcode", getAllCode);
+//api all code
+router.get("/api/allcode", getAllCode);
 
 module.exports = router;

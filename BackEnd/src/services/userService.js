@@ -106,13 +106,15 @@ const createNewUser = (data) => {
       else {
         const hashPasswordFromBcrypt = await hashUserPassword(data.password); //truyen vao password ma nguoi dung nhap vao
         await db.User.create({
-          email: data.email, //gan email:data.email co nghia la gan gia tri ban dau la rong bang chinh gia tri nhap vao
+          email: data.email,
           password: hashPasswordFromBcrypt,
           fullName: data.fullName,
           address: data.address,
           phoneNumber: data.phoneNumber,
-          gender: data.gender === "1" ? true : false,
+          gender: data.gender,
           roleId: data.roleId,
+          positionId: data.positionId,
+          image: data.image,
         }); //=insert into users
         resolve({
           errCode: 0,
@@ -169,38 +171,47 @@ const deleteUserById = (userId) => {
 const updateUserData = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
+      const user = await db.User.findOne({
+        where: { id: data.id },
+      });
       if (!data.id) {
         resolve({
           errCode: 2,
           errMessage: "Missing id",
         });
-      }
-      const user = await db.User.findOne({
-        where: { id: data.id },
-      });
-      if (user) {
-        (user.fullName = data.fullName),
-          (user.address = data.address),
-          (user.roleId = data.roleId);
-        user.phoneNumber = data.phoneNumber;
-
-        //fix raw query error
-        // await db.user.save({
-        //   fullName: data.fullName,
-        //   address: data.address,
-        //   phoneNumber: data.phoneNumber,
-        // });
-
-        await user.save();
-        resolve({
-          errCode: 0,
-          message: "Update the user succeeds !",
-        });
       } else {
-        resolve({
-          errCode: 1,
-          errMessage: "User not found !",
-        });
+        let check = await checkUserEmail(data.email);
+        if (check && user.email !== data.email) {
+          resolve({
+            errCode: 1,
+            errMessage: "Your email is already used, Plz try another email !",
+          });
+        } else {
+          if (user) {
+            (user.fullName = data.fullName),
+              (user.address = data.address),
+              (user.roleId = data.roleId);
+            user.phoneNumber = data.phoneNumber;
+
+            //fix raw query error
+            // await db.user.save({
+            //   fullName: data.fullName,
+            //   address: data.address,
+            //   phoneNumber: data.phoneNumber,
+            // });
+
+            await user.save();
+            resolve({
+              errCode: 0,
+              message: "Update the user succeeds !",
+            });
+          } else {
+            resolve({
+              errCode: 1,
+              errMessage: "User not found !",
+            });
+          }
+        }
       }
     } catch (e) {
       reject(e);
