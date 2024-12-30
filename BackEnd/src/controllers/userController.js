@@ -1,3 +1,4 @@
+const { cache } = require("ejs");
 const {
   handleUserLogin,
   getAllUsers,
@@ -63,9 +64,16 @@ const handleCreateNewUser = async (req, res) => {
 };
 
 const handleEditUser = async (req, res) => {
-  const data = req.body;
-  const message = await updateUserData(data);
-  return res.status(200).json(message);
+  try {
+    const data = req.body;
+    const message = await updateUserData(data);
+    return res.status(200).json(message);
+  } catch (e) {
+    res.status(500).json({
+      errCode: -3,
+      errMessage: "Error from Server!",
+    });
+  }
 };
 
 const handleDeleteUser = async (req, res) => {

@@ -61,6 +61,7 @@
     "position": "Position",
     "role": "Role",
     "save": "Save user",
-    "image": "Image"
+    "image": "Image",
+    "edit": "Save changes"
   }
 }

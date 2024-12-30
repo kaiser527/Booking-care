@@ -4,6 +4,7 @@ const initialState = {
   genders: [],
   roles: [],
   positions: [],
+  users: [],
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -45,14 +46,16 @@ const adminReducer = (state = initialState, action) => {
         ...copyState,
       };
 
-    case actionTypes.CREATE_USER_SUCCESS:
+    case actionTypes.FETCH_ALL_USER_SUCCESS:
+      copyState.users = action.data;
       return {
-        copyState,
+        ...copyState,
       };
 
-    case actionTypes.CREATE_USER_FAILED:
+    case actionTypes.FETCH_ALL_USER_FAILED:
+      copyState.users = [];
       return {
-        copyState,
+        ...copyState,
       };
 
     default:

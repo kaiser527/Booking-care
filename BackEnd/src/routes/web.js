@@ -17,6 +17,7 @@ const {
   handleDeleteUser,
   getAllCode,
 } = require("../controllers/userController");
+const { getTopDoctorHome } = require("../controllers/doctorController");
 
 //crud
 router.get("/", getHomePage);
@@ -33,6 +34,9 @@ router.get("/api/get-all-users", handleGetAllUsers);
 router.post("/api/create-new-user", handleCreateNewUser);
 router.put("/api/edit-user", handleEditUser);
 router.delete("/api/delete-user", handleDeleteUser);
+
+//api doctors
+router.get("/api/top-doctor-home", getTopDoctorHome);
 
 //api all code
 router.get("/api/allcode", getAllCode);

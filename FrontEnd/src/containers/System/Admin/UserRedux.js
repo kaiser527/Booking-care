@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
-import { LANGUAGES } from "../../../utils";
+import { LANGUAGES, CRUD_ACTION } from "../../../utils";
 import * as actions from "../../../store/actions";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
 import "./UserRedux.scss";
 import { useSelector } from "react-redux";
+import TableManageUser from "./TableManageUser";
+import { toast } from "react-toastify";
+import { getBase64 } from "../../../utils/CommonUtils";
 
 const UserRedux = () => {
   const [previewImageURL, setPreviewImageURL] = useState("");
@@ -23,11 +26,14 @@ const UserRedux = () => {
   const [listGender, setListGender] = useState([]);
   const [listRole, setListRole] = useState([]);
   const [listPosition, setListPosition] = useState([]);
+  const [action, setAction] = useState("");
+  const [userEditId, setUserEditId] = useState("");
 
   const language = useSelector((state) => state.app.language);
   const genders = useSelector((state) => state.admin.genders);
   const positions = useSelector((state) => state.admin.positions);
   const roles = useSelector((state) => state.admin.roles);
+  const users = useSelector((state) => state.admin.users);
 
   const dispatch = useDispatch();
 
@@ -40,22 +46,42 @@ const UserRedux = () => {
   useEffect(() => {
     let arrGenders = genders;
     setListGender(arrGenders);
-    setGender(arrGenders && arrGenders.length > 0 ? arrGenders[0].key : "");
+    setGender(arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : "");
   }, [genders]);
 
   useEffect(() => {
     let arrRoles = roles;
     setListRole(arrRoles);
-    setRole(arrRoles && arrRoles.length > 0 ? arrRoles[0].key : "");
+    setRole(arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : "");
   }, [roles]);
 
   useEffect(() => {
     let arrPositions = positions;
     setListPosition(arrPositions);
     setPosition(
-      arrPositions && arrPositions.length > 0 ? arrPositions[0].key : ""
+      arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : ""
     );
   }, [positions]);
+
+  useEffect(() => {
+    let arrGenders = genders;
+    let arrRoles = roles;
+    let arrPositions = positions;
+
+    setEmail("");
+    setPassword("");
+    setFullName("");
+    setPhoneNumber("");
+    setAddress("");
+    setAvatar("");
+    setPreviewImageURL("");
+    setGender(arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : "");
+    setRole(arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : "");
+    setPosition(
+      arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : ""
+    );
+    setAction(CRUD_ACTION.CREATE);
+  }, [users]);
 
   const validateEmail = (email) => {
     return String(email)
@@ -65,39 +91,87 @@ const UserRedux = () => {
       );
   };
 
+  const isNumeric = (num) => {
+    return !isNaN(num);
+  };
+
   const openPreviewImage = () => {
     if (!previewImageURL) return;
     setIsOpen(true);
   };
 
-  const handleOnChangeImage = (event) => {
+  const handleOnChangeImage = async (event) => {
     if (event.target && event.target.files && event.target.files[0]) {
+      let base64 = await getBase64(event.target.files[0]);
       setPreviewImageURL(URL.createObjectURL(event.target.files[0]));
-      setAvatar(event.target.files[0]);
+      setAvatar(base64);
     }
   };
 
   const handleSaveUser = () => {
     if (!email || !password || !fullName || !address || !phoneNumber) {
-      alert("Missing required paramenter");
+      toast.error("Missing required paramenters!");
       return;
     }
     let check = validateEmail(email);
     if (!check) {
-      alert("Invalid email");
+      toast.error("Invalid email!");
+      return;
     }
-    let data = {
-      email: email,
-      password: password,
-      fullName: fullName,
-      address: address,
-      phoneNumber: phoneNumber,
-      gender: gender,
-      roleId: role,
-      positionId: position,
-      image: avatar,
-    };
-    dispatch(actions.createNewUserRedux(data));
+    if (!isNumeric(phoneNumber)) {
+      toast.error("Phone must be a number!");
+      return;
+    }
+
+    if (action === CRUD_ACTION.CREATE) {
+      let data = {
+        email: email,
+        password: password,
+        fullName: fullName,
+        address: address,
+        phoneNumber: phoneNumber,
+        gender: gender,
+        roleId: role,
+        positionId: position,
+        image: avatar,
+      };
+      dispatch(actions.createNewUserRedux(data));
+    }
+    if (action === CRUD_ACTION.EDIT) {
+      let data = {
+        id: userEditId,
+        email: email,
+        password: password,
+        fullName: fullName,
+        address: address,
+        phoneNumber: phoneNumber,
+        gender: gender,
+        roleId: role,
+        positionId: position,
+        image: avatar,
+      };
+      dispatch(actions.editUserRedux(data));
+    }
+  };
+
+  const handleEditUserFromParent = (user) => {
+    let imageBase64 = "";
+    if (user.image) {
+      imageBase64 = new Buffer(user.image, "base64").toString("binary");
+    }
+
+    setEmail(user.email);
+    setPassword("HashPassword");
+    setFullName(user.fullName);
+    setPhoneNumber(user.phoneNumber);
+    setAddress(user.address);
+    setAvatar("");
+    setPreviewImageURL(imageBase64);
+    setGender(user.gender);
+    setRole(user.roleId);
+    setPosition(user.positionId);
+    setAction(CRUD_ACTION.EDIT);
+    setUserEditId(user.id);
   };
 
   return (
@@ -114,6 +188,7 @@ const UserRedux = () => {
                 <FormattedMessage id="manage-user.email" />
               </label>
               <input
+                disabled={action === CRUD_ACTION.EDIT ? true : false}
                 type="email"
                 className="form-control"
                 value={email}
@@ -125,6 +200,7 @@ const UserRedux = () => {
                 <FormattedMessage id="manage-user.password" />
               </label>
               <input
+                disabled={action === CRUD_ACTION.EDIT ? true : false}
                 type="password"
                 className="form-control"
                 value={password}
@@ -171,12 +247,13 @@ const UserRedux = () => {
               <select
                 className="form-control"
                 onChange={(event) => setGender(event.target.value)}
+                value={gender}
               >
                 {listGender &&
                   listGender.length > 0 &&
                   listGender.map((gender, index) => {
                     return (
-                      <option key={index} value={gender.key}>
+                      <option key={index} value={gender.keyMap}>
                         {language === LANGUAGES.VI
                           ? gender.valueVi
                           : gender.valueEn}
@@ -192,12 +269,13 @@ const UserRedux = () => {
               <select
                 className="form-control"
                 onChange={(event) => setPosition(event.target.value)}
+                value={position}
               >
                 {listPosition &&
                   listPosition.length > 0 &&
                   listPosition.map((position, index) => {
                     return (
-                      <option key={index} value={position.key}>
+                      <option key={index} value={position.keyMap}>
                         {language === LANGUAGES.VI
                           ? position.valueVi
                           : position.valueEn}
@@ -213,12 +291,13 @@ const UserRedux = () => {
               <select
                 className="form-control"
                 onChange={(event) => setRole(event.target.value)}
+                value={role}
               >
                 {listRole &&
                   listRole.length > 0 &&
                   listRole.map((role, index) => {
                     return (
-                      <option key={index} value={role.key}>
+                      <option key={index} value={role.keyMap}>
                         {language === LANGUAGES.VI
                           ? role.valueVi
                           : role.valueEn}
@@ -252,11 +331,25 @@ const UserRedux = () => {
             </div>
             <div className="col-12 mt-3">
               <button
-                className="btn btn-primary"
+                className={
+                  action === CRUD_ACTION.EDIT
+                    ? "btn btn-warning"
+                    : "btn btn-primary"
+                }
                 onClick={() => handleSaveUser()}
               >
-                <FormattedMessage id="manage-user.save" />
+                {action === CRUD_ACTION.EDIT ? (
+                  <FormattedMessage id="manage-user.edit" />
+                ) : (
+                  <FormattedMessage id="manage-user.save" />
+                )}
               </button>
+            </div>
+            <div className="col-12 mt-4 mb-5">
+              <TableManageUser
+                handleEditUserFromParent={handleEditUserFromParent}
+                action={action}
+              />
             </div>
           </div>
         </div>

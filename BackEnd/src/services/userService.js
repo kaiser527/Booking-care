@@ -73,8 +73,8 @@ const getAllUsers = (userId) => {
         users = await db.User.findAll({
           attributes: {
             exclude: ["password"],
-            raw: true,
           },
+          raw: true,
         });
       }
       if (userId && userId !== "ALL") {
@@ -160,7 +160,7 @@ const deleteUserById = (userId) => {
 
       resolve({
         errCode: 0,
-        errMessage: "The user is deleted",
+        message: "The user is deleted",
       });
     } catch (e) {
       reject(e);
@@ -174,10 +174,10 @@ const updateUserData = (data) => {
       const user = await db.User.findOne({
         where: { id: data.id },
       });
-      if (!data.id) {
+      if (!data.id || !data.roleId || !data.positionId || !data.gender) {
         resolve({
           errCode: 2,
-          errMessage: "Missing id",
+          errMessage: "Missing required paramenters!",
         });
       } else {
         let check = await checkUserEmail(data.email);
@@ -188,10 +188,15 @@ const updateUserData = (data) => {
           });
         } else {
           if (user) {
-            (user.fullName = data.fullName),
-              (user.address = data.address),
-              (user.roleId = data.roleId);
+            user.fullName = data.fullName;
+            user.address = data.address;
+            user.roleId = data.roleId;
             user.phoneNumber = data.phoneNumber;
+            if (data.image) {
+              user.image = data.image;
+            }
+            user.positionId = data.positionId;
+            user.gender = data.gender;
 
             //fix raw query error
             // await db.user.save({
