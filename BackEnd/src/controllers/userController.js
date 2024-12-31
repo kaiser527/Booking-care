@@ -43,7 +43,6 @@ const handleGetAllUsers = async (req, res) => {
     });
   }
   const users = await getAllUsers(id);
-  console.log(users);
   return res.status(200).json({
     errCode: 0,
     errMessage: "OK",
@@ -60,6 +59,7 @@ const handleCreateNewUser = async (req, res) => {
       errCode: -3,
       errMessage: "Error from Server!",
     });
+    console.log(e);
   }
 };
 

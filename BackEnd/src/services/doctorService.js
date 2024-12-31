@@ -7,7 +7,7 @@ const getTopDoctorHomeService = (limit) => {
         limit: limit,
         order: [["createdAt", "DESC"]],
         attributes: {
-          exclude: ["password", "image"],
+          exclude: ["password"],
         },
         raw: true,
         nest: true,

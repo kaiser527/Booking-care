@@ -318,7 +318,8 @@ const UserRedux = () => {
                   onChange={(event) => handleOnChangeImage(event)}
                 />
                 <label className="label-upload" htmlFor="previewImg">
-                  Tải ảnh <i className="fas fa-upload" />
+                  <FormattedMessage id="manage-user.upload" />{" "}
+                  <i className="fas fa-upload" />
                 </label>
                 <div
                   className="preview-img"

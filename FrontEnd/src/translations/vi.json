@@ -23,6 +23,15 @@
     "child6": "Khám nha khoa"
   },
 
+  "auth": {
+    "login": {
+      "login": "Đăng nhập",
+      "password": "Mật khẩu",
+      "forgot": "Quên mật khẩu ?",
+      "or-login-with": "Hoặc đăng nhập với"
+    }
+  },
+
   "menu": {
     "system": {
       "header": "Hệ thống",
@@ -62,6 +71,8 @@
     "role": "Vai trò",
     "save": "Lưu người dùng",
     "image": "Hình ảnh",
-    "edit": "Lưu thay đổi"
+    "edit": "Lưu thay đổi",
+    "upload": "Tải ảnh",
+    "actions": "Thực hiện"
   }
 }

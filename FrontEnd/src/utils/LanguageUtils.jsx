@@ -24,12 +24,12 @@ const messages = {
   en: flattenMessages(messages_en),
 };
 
-export default class LanguageUtils {
-  static getMessageByKey(key, lang) {
-    return messages[lang][key];
-  }
+const getMessageByKey = (key, lang) => {
+  return messages[lang][key];
+};
 
-  static getFlattenedMessages() {
-    return messages;
-  }
-}
+const getFlattenedMessages = () => {
+  return messages;
+};
+
+export { getFlattenedMessages, getMessageByKey };

@@ -23,6 +23,15 @@
     "child6": "Dental examination"
   },
 
+  "auth": {
+    "login": {
+      "login": "Login",
+      "password": "Password",
+      "forgot": "Forgot your password ?",
+      "or-login-with": "Or Login With"
+    }
+  },
+
   "menu": {
     "system": {
       "header": "System",
@@ -62,6 +71,8 @@
     "role": "Role",
     "save": "Save user",
     "image": "Image",
-    "edit": "Save changes"
+    "edit": "Save changes",
+    "upload": "Upload image",
+    "actions": "Actions"
   }
 }
