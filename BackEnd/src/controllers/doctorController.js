@@ -1,4 +1,8 @@
-const { getTopDoctorHomeService } = require("../services/doctorService");
+const {
+  getTopDoctorHomeService,
+  getAllDoctorsService,
+  saveDetailInfoDoctor,
+} = require("../services/doctorService");
 
 const getTopDoctorHome = async (req, res) => {
   let limit = req.query.limit;
@@ -15,4 +19,30 @@ const getTopDoctorHome = async (req, res) => {
   }
 };
 
-module.exports = { getTopDoctorHome };
+const getAllDoctors = async (req, res) => {
+  try {
+    let doctors = await getAllDoctorsService();
+    res.status(200).json(doctors);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      errCode: -3,
+      errMessage: "Error from Server!",
+    });
+  }
+};
+
+const postInfoDoctor = async (req, res) => {
+  try {
+    let response = await saveDetailInfoDoctor(req.body);
+    res.status(200).json(response);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      errCode: -3,
+      errMessage: "Error from Server!",
+    });
+  }
+};
+
+module.exports = { getTopDoctorHome, getAllDoctors, postInfoDoctor };

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Slider from "react-slick";
 import * as actions from "../../../store/actions";
 import { LANGUAGES } from "../../../utils";
+import { FormattedMessage } from "react-intl";
 
 const OutStandingDoctor = (props) => {
   const [listTopDoctors, setListTopDoctors] = useState([]);
@@ -25,8 +26,12 @@ const OutStandingDoctor = (props) => {
       <div className="section-outstanding-doctor section-share">
         <div className="section-container">
           <div className="section-header">
-            <span className="title-section">Bác sĩ nổi bật tuần qua</span>
-            <button className="btn-section">Xem thêm</button>
+            <span className="title-section">
+              <FormattedMessage id="homepage.out-standing-doctor" />
+            </span>
+            <button className="btn-section">
+              <FormattedMessage id="homepage.more-info" />
+            </button>
           </div>
           <div className="section-body">
             <Slider {...props.settings}>

@@ -58,7 +58,7 @@ const SubMenu = (props) => {
   const { name, link, onLinkClick } = props;
 
   const getItemClass = (path) => {
-    return this.props.location.pathname === path ? "active" : "";
+    return props.location.pathname === path ? "active" : "";
   };
 
   return (

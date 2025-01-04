@@ -13,7 +13,7 @@
   },
 
   "banner": {
-    "title1": "MEDICAL FOUNDATION",
+    "title1": "MEDICAL PLATFORM",
     "title2": "COMPREHENSIVE HEALTH CARE",
     "child1": "Specialized examination",
     "child2": "Online examination",
@@ -59,6 +59,7 @@
       "manage-handbook": "Manage handbook"
     }
   },
+
   "manage-user": {
     "add": "Add new user",
     "email": "Email",
@@ -74,5 +75,10 @@
     "edit": "Save changes",
     "upload": "Upload image",
     "actions": "Actions"
+  },
+
+  "homepage": {
+    "out-standing-doctor": "Outstanding doctor last week",
+    "more-info": "More info"
   }
 }

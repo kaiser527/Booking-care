@@ -39,7 +39,7 @@ const CustomScrollbars = (props) => {
       return;
     }
     const scrollbars = ref.current;
-    const originalTop = scrollbars.getScrollTop();
+    const originalTop = getScrollTop();
     let iteration = 0;
 
     const scroll = () => {

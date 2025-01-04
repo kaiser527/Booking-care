@@ -59,6 +59,7 @@
       "manage-handbook": "Quản lý cẩm nang"
     }
   },
+
   "manage-user": {
     "add": "Thêm mới người dùng",
     "email": "Email",
@@ -74,5 +75,10 @@
     "edit": "Lưu thay đổi",
     "upload": "Tải ảnh",
     "actions": "Thực hiện"
+  },
+
+  "homepage": {
+    "out-standing-doctor": "Bác sĩ nổi bật tuần qua",
+    "more-info": "Xem thêm"
   }
 }

@@ -22,6 +22,10 @@
   }
 }
 
+.slick-disabled {
+  display: none !important;
+}
+
 .slick-next:before {
   font-family: FontAwesome !important;
   color: grey !important;
@@ -134,7 +138,7 @@
     padding: 0 10px;
     .customize-border {
       padding: 20px;
-      border: 1px solid violet;
+      border: 1px solid orange;
     }
   }
 }

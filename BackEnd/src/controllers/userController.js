@@ -69,6 +69,7 @@ const handleEditUser = async (req, res) => {
     const message = await updateUserData(data);
     return res.status(200).json(message);
   } catch (e) {
+    console.log(e);
     res.status(500).json({
       errCode: -3,
       errMessage: "Error from Server!",

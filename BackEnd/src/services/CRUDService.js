@@ -70,9 +70,9 @@ const updateUserData = (data) => {
         where: { id: data.id },
       });
       if (user) {
-        (user.fullName = data.fullName),
-          (user.address = data.address),
-          (user.phoneNumber = data.phoneNumber);
+        user.fullName = data.fullName;
+        user.address = data.address;
+        user.phoneNumber = data.phoneNumber;
 
         await user.save();
         const allUsers = await db.User.findAll();
