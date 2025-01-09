@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { BrowserRouter as Router } from "react-router-dom";
 import "./styles/styles.scss";
 
 import App from "./containers/App";
@@ -14,7 +15,9 @@ const renderApp = () => {
   ReactDOM.render(
     <Provider store={reduxStore}>
       <IntlProviderWrapper>
-        <App persistor={persistor} />
+        <Router>
+          <App persistor={persistor} />
+        </Router>
       </IntlProviderWrapper>
     </Provider>,
     document.getElementById("root")

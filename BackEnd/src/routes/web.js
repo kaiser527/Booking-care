@@ -21,6 +21,8 @@ const {
   getTopDoctorHome,
   getAllDoctors,
   postInfoDoctor,
+  getDetailDoctorById,
+  getDoctorMarkdown,
 } = require("../controllers/doctorController");
 
 //crud
@@ -43,6 +45,8 @@ router.delete("/api/delete-user", handleDeleteUser);
 router.get("/api/top-doctor-home", getTopDoctorHome);
 router.get("/api/get-all-doctors", getAllDoctors);
 router.post("/api/save-info-doctor", postInfoDoctor);
+router.get("/api/get-detail-doctor-by-id", getDetailDoctorById);
+router.get("/api/get-doctor-markdown-by-id", getDoctorMarkdown);
 
 //api all code
 router.get("/api/allcode", getAllCode);

@@ -77,6 +77,14 @@
     "actions": "Actions"
   },
 
+  "manage-doctor": {
+    "select-doctor": "Select Doctor:",
+    "add-info": "Add more Information for Doctor",
+    "description": "Description",
+    "save-info": "Save info",
+    "create-info": "Create info"
+  },
+
   "homepage": {
     "out-standing-doctor": "Outstanding doctor last week",
     "more-info": "More info"

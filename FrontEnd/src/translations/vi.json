@@ -77,6 +77,14 @@
     "actions": "Thực hiện"
   },
 
+  "manage-doctor": {
+    "select-doctor": "Chọn Bác sĩ:",
+    "add-info": "Thêm thông tin Bác sĩ",
+    "description": "Chi tiết",
+    "save-info": "Lưu thông tin",
+    "create-info": "Tạo thông tin"
+  },
+
   "homepage": {
     "out-standing-doctor": "Bác sĩ nổi bật tuần qua",
     "more-info": "Xem thêm"

@@ -1,25 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Slider from "react-slick";
 import * as actions from "../../../store/actions";
 import { LANGUAGES } from "../../../utils";
 import { FormattedMessage } from "react-intl";
+import { useHistory } from "react-router-dom";
 
 const OutStandingDoctor = (props) => {
-  const [listTopDoctors, setListTopDoctors] = useState([]);
-
   const dispatch = useDispatch();
 
-  const topdoctors = useSelector((state) => state.admin.topdoctors);
+  const history = useHistory();
+
+  const listTopDoctors = useSelector((state) => state.doctor.topdoctors);
+
   const language = useSelector((state) => state.app.language);
 
   useEffect(() => {
     dispatch(actions.fetchTopDoctor());
   }, []);
 
-  useEffect(() => {
-    setListTopDoctors(topdoctors);
-  }, [topdoctors]);
+  const handleViewDetailDoctor = (doctor) => {
+    history.push(`/detail-doctor/${doctor.id}`);
+  };
 
   return (
     <>
@@ -50,6 +52,7 @@ const OutStandingDoctor = (props) => {
                     <div
                       key={`top-doctor-${index}`}
                       className="section-customize"
+                      onClick={() => handleViewDetailDoctor(doctor)}
                     >
                       <div className="customize-border">
                         <div className="outer-bg">

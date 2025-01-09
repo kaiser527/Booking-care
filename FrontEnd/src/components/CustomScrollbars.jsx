@@ -1,4 +1,4 @@
-import React from "react";
+import { useRef } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 
 import "./CustomScrollbars.scss";
@@ -12,7 +12,7 @@ const CustomScrollbars = (props) => {
     ...otherProps
   } = props;
 
-  let ref = React.createRef();
+  let ref = useRef(null);
 
   const getScrollLeft = () => {
     const scrollbars = ref.current;
@@ -79,7 +79,7 @@ const CustomScrollbars = (props) => {
     return <div {...props} className="thumb-vertical" />;
   };
 
-  const renderNone = (props) => {
+  const renderNone = () => {
     return <div />;
   };
 

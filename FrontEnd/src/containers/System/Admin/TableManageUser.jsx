@@ -17,7 +17,12 @@ const TableManageUser = (props) => {
   }, []);
 
   useEffect(() => {
-    setUserRedux(users);
+    const filteredData = users.filter((user) => user.email !== null);
+    const nullUser = users.find((user) => user.email === null);
+    if (nullUser) {
+      dispatch(actions.deleteUserRedux(nullUser?.id));
+    }
+    setUserRedux(filteredData);
   }, [users]);
 
   const handleDeleteUser = (user) => {
