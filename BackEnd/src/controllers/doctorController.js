@@ -1,10 +1,10 @@
-const {
+import {
   getTopDoctorHomeService,
   getAllDoctorsService,
   saveDetailInfoDoctor,
   getDetailDoctorByIdService,
   getDoctorMarkdownById,
-} = require("../services/doctorService");
+} from "../services/doctorService";
 
 const getTopDoctorHome = async (req, res) => {
   let limit = req.query.limit;
@@ -73,7 +73,7 @@ const getDoctorMarkdown = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getTopDoctorHome,
   getAllDoctors,
   postInfoDoctor,

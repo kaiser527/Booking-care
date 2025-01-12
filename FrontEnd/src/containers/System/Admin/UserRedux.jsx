@@ -28,6 +28,8 @@ const UserRedux = () => {
   const [listPosition, setListPosition] = useState([]);
   const [action, setAction] = useState("");
   const [userEditId, setUserEditId] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   const language = useSelector((state) => state.app.language);
   const genders = useSelector((state) => state.admin.genders);
@@ -152,6 +154,7 @@ const UserRedux = () => {
       };
       dispatch(actions.editUserRedux(data));
     }
+    setCurrentPage(1);
   };
 
   const handleEditUserFromParent = (user) => {
@@ -350,6 +353,10 @@ const UserRedux = () => {
               <TableManageUser
                 handleEditUserFromParent={handleEditUserFromParent}
                 action={action}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setCurrentPage={setCurrentPage}
+                setTotalPages={setTotalPages}
               />
             </div>
           </div>

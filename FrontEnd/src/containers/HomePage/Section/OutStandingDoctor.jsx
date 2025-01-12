@@ -19,10 +19,6 @@ const OutStandingDoctor = (props) => {
     dispatch(actions.fetchTopDoctor());
   }, []);
 
-  const handleViewDetailDoctor = (doctor) => {
-    history.push(`/detail-doctor/${doctor.id}`);
-  };
-
   return (
     <>
       <div className="section-outstanding-doctor section-share">
@@ -52,7 +48,9 @@ const OutStandingDoctor = (props) => {
                     <div
                       key={`top-doctor-${index}`}
                       className="section-customize"
-                      onClick={() => handleViewDetailDoctor(doctor)}
+                      onClick={() =>
+                        history.push(`/detail-doctor/${doctor.id}`)
+                      }
                     >
                       <div className="customize-border">
                         <div className="outer-bg">

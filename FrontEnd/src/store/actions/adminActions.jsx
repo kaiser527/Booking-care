@@ -90,7 +90,7 @@ export const createNewUserRedux = (data) => {
       console.log("check res", res);
       if (res && res.errCode === 0) {
         dispatch(createUserSuccess());
-        dispatch(fetchAllUserRedux());
+        dispatch(fetchAllUserRedux(1, 4));
         toast.success(res.message);
       } else {
         dispatch(createUserFailed());
@@ -111,12 +111,13 @@ export const createUserFailed = () => ({
   type: actionTypes.CREATE_USER_FAILED,
 });
 
-export const fetchAllUserRedux = () => {
+export const fetchAllUserRedux = (page, limit) => {
   return async (dispatch, getState) => {
     try {
-      const res = await getAllUsers("ALL");
+      const res = await getAllUsers(page, limit);
+      console.log(res.data);
       if (res && res.errCode === 0) {
-        let users = res.users.reverse();
+        let users = res.data;
         dispatch(fetchAllUserSuccess(users));
       } else {
         dispatch(fetchAllUserFailed());
@@ -143,7 +144,7 @@ export const deleteUserRedux = (userId) => {
       const res = await deleteUserService(userId);
       if (res && res.errCode === 0) {
         dispatch(deleteUserSuccess());
-        dispatch(fetchAllUserRedux());
+        dispatch(fetchAllUserRedux(1, 4));
         toast.success(res.message);
       } else {
         dispatch(deleteUserFailed());
@@ -170,7 +171,7 @@ export const editUserRedux = (data) => {
       const res = await editUserService(data);
       if (res && res.errCode === 0) {
         dispatch(editUserSuccess());
-        dispatch(fetchAllUserRedux());
+        dispatch(fetchAllUserRedux(1, 4));
         toast.success(res.message);
       } else {
         dispatch(editUserFailed());

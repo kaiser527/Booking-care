@@ -12,7 +12,7 @@ const CustomScrollbars = (props) => {
     ...otherProps
   } = props;
 
-  let ref = useRef(null);
+  const ref = useRef(null);
 
   const getScrollLeft = () => {
     const scrollbars = ref.current;

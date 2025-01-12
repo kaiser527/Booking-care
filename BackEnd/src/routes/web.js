@@ -1,6 +1,8 @@
-const express = require("express"); //import express
+import express from "express";
+
 const router = express.Router(); //khai bao router
-const {
+
+import {
   getHomePage,
   getCRUDPage,
   postCRUD,
@@ -8,22 +10,22 @@ const {
   getEditCRUD,
   putCRUD,
   deleteCRUD,
-} = require("../controllers/homeControllers");
-const {
+} from "../controllers/homeControllers";
+import {
   handleLogin,
   handleGetAllUsers,
   handleCreateNewUser,
   handleEditUser,
   handleDeleteUser,
   getAllCode,
-} = require("../controllers/userController");
-const {
+} from "../controllers/userController";
+import {
   getTopDoctorHome,
   getAllDoctors,
   postInfoDoctor,
   getDetailDoctorById,
   getDoctorMarkdown,
-} = require("../controllers/doctorController");
+} from "../controllers/doctorController";
 
 //crud
 router.get("/", getHomePage);
@@ -51,4 +53,4 @@ router.get("/api/get-doctor-markdown-by-id", getDoctorMarkdown);
 //api all code
 router.get("/api/allcode", getAllCode);
 
-module.exports = router;
+export default router;

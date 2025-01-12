@@ -1,4 +1,4 @@
-const db = require("../models/index");
+import db from "../models/index";
 
 const getTopDoctorHomeService = (limit) => {
   return new Promise(async (resolve, reject) => {
@@ -169,7 +169,7 @@ const getDoctorMarkdownById = (doctorId) => {
   });
 };
 
-module.exports = {
+export {
   getTopDoctorHomeService,
   getAllDoctorsService,
   saveDetailInfoDoctor,

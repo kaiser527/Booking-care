@@ -1,12 +1,12 @@
-const { cache } = require("ejs");
-const {
+import {
   handleUserLogin,
   getAllUsers,
   createNewUser,
   deleteUserById,
   updateUserData,
   getAllCodeService,
-} = require("../services/userService");
+  getUserWithPagination,
+} from "../services/userService";
 
 //auth
 const handleLogin = async (req, res) => {
@@ -34,20 +34,38 @@ const handleLogin = async (req, res) => {
 
 //users
 const handleGetAllUsers = async (req, res) => {
-  const id = req.query.id; //All, id
-  if (!id) {
-    return res.status(500).json({
-      errCode: 1,
-      errMessage: "Missing id",
-      users: [],
+  try {
+    if (req.query.page && req.query.limit) {
+      let { page, limit } = req.query;
+      const users = await getUserWithPagination(+page, +limit);
+      return res.status(200).json({
+        errCode: 0,
+        errMessage: "OK",
+        data: users,
+      });
+    } else {
+      const id = req.query.id; //All, id
+      if (!id) {
+        return res.status(500).json({
+          errCode: 1,
+          errMessage: "Missing id",
+          users: [],
+        });
+      }
+      const users = await getAllUsers(id);
+      return res.status(200).json({
+        errCode: 0,
+        errMessage: "OK",
+        users,
+      });
+    }
+  } catch (e) {
+    res.status(500).json({
+      errCode: -3,
+      errMessage: "Error from Server!",
     });
+    console.log(e);
   }
-  const users = await getAllUsers(id);
-  return res.status(200).json({
-    errCode: 0,
-    errMessage: "OK",
-    users,
-  });
 };
 
 const handleCreateNewUser = async (req, res) => {
@@ -102,7 +120,7 @@ const getAllCode = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   handleLogin,
   handleGetAllUsers,
   handleCreateNewUser,

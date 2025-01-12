@@ -1,5 +1,5 @@
-const bcrypt = require("bcryptjs");
-const db = require("../models/index");
+import bcrypt from "bcryptjs";
+import db from "../models/index";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -102,7 +102,7 @@ const deleteUserById = (userId) => {
   });
 };
 
-module.exports = {
+export {
   createNewUser,
   getAllUser,
   getUserInfoById,

@@ -1,11 +1,11 @@
-const db = require("../models/index");
-const {
+import db from "../models/index";
+import {
   createNewUser,
   getAllUser,
   getUserInfoById,
   updateUserData,
   deleteUserById,
-} = require("../services/CRUDService");
+} from "../services/CRUDService";
 
 const getHomePage = async (req, res) => {
   try {
@@ -57,7 +57,7 @@ const deleteCRUD = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getHomePage,
   getCRUDPage,
   postCRUD,

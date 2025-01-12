@@ -1,4 +1,4 @@
-const { Sequelize } = require("sequelize");
+import { Sequelize } from "sequelize";
 
 require("dotenv").config();
 
@@ -23,4 +23,4 @@ const connect = async () => {
   }
 };
 
-module.exports = connect;
+export default connect;

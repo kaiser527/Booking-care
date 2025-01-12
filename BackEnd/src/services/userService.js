@@ -1,5 +1,5 @@
-const db = require("../models/index");
-const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
+import db from "../models/index";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -26,6 +26,7 @@ const handleUserLogin = (email, password) => {
             userData.errMessage = "ok";
             delete user.password; //vi chi muon tra ra email va roldeId nen dung delete user.password de kh hien thi thong tin password cua nguoi dung khi login thanh cong
             userData.user = user; //khi login thanh cong se tra ra thong tin cua 1 user
+            userData.access_token = "";
           } else {
             userData.errCode = 3;
             userData.errMessage = "Wrong password";
@@ -87,6 +88,29 @@ const getAllUsers = (userId) => {
         });
       }
       resolve(users);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getUserWithPagination = (page, limit) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let offset = (page - 1) * limit;
+      const { count, rows } = await db.User.findAndCountAll({
+        offset: offset,
+        limit: limit,
+        attributes: {
+          exclude: ["password"],
+        },
+      });
+      let data = {
+        totalRows: count,
+        totalPages: Math.ceil(count / limit),
+        users: rows,
+      };
+      resolve(data);
     } catch (e) {
       reject(e);
     }
@@ -248,11 +272,12 @@ const getAllCodeService = (typeInput) => {
   });
 };
 
-module.exports = {
+export {
   handleUserLogin,
   getAllUsers,
   createNewUser,
   deleteUserById,
   updateUserData,
   getAllCodeService,
+  getUserWithPagination,
 };

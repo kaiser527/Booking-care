@@ -33,18 +33,6 @@
   },
 
   "menu": {
-    "system": {
-      "header": "System",
-      "system-administrator": {
-        "header": "System Administrator",
-        "user-manage": "User manage",
-        "user-redux": "User mange Redux",
-        "register-package-group-or-account": "Register service package for group/account"
-      },
-      "system-parameter": {
-        "header": "System-parameter"
-      }
-    },
     "admin": {
       "manage-user": "Users",
       "manage-doctor": "Manage doctors",
@@ -57,6 +45,9 @@
       "manage-specialty": "Manage specialties",
       "handbook": "Handbook",
       "manage-handbook": "Manage handbook"
+    },
+    "doctor": {
+      "manage-schedule": "Manage Doctor's Schedule"
     }
   },
 

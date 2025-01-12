@@ -14,6 +14,7 @@ import System from "../routes/System";
 import HomePage from "./HomePage/HomePage";
 import CustomScrollbars from "../components/CustomScrollbars";
 import DetailDoctor from "./Patient/Doctor/DetailDoctor";
+import Doctor from "../routes/Doctor";
 
 const App = (props) => {
   const { persistor } = props;
@@ -50,6 +51,10 @@ const App = (props) => {
                 <Route
                   path={path.SYSTEM}
                   component={userIsAuthenticated(System)}
+                />
+                <Route
+                  path={"/doctor/"}
+                  component={userIsAuthenticated(Doctor)}
                 />
                 <Route path={path.HOMEPAGE} component={HomePage} />
                 <Route path={path.DETAIL_DOCTOR} component={DetailDoctor} />
