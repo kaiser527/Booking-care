@@ -26,7 +26,6 @@ instance.interceptors.response.use(
       // forbidden (permission related issues)
       case 403: {
         toast.error("You don't have permisson to access here");
-        window.location.href = "/home";
         return Promise.reject(error.message);
       }
 
