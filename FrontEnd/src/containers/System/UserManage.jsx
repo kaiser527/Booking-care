@@ -33,11 +33,11 @@ class UserManage extends Component {
   }
 
   fetchUsersData = async () => {
-    const res = await getAllUsers("ALL");
+    const res = await getAllUsers(1, 6);
     if (res && res.errCode === 0) {
       this.setState({
         //muon ham render re-render lai thi dung set state
-        arrayUsers: res.users,
+        arrayUsers: res.data.users,
       });
     }
   };

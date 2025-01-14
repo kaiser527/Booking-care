@@ -29,7 +29,6 @@ const UserRedux = () => {
   const [action, setAction] = useState("");
   const [userEditId, setUserEditId] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
 
   const language = useSelector((state) => state.app.language);
   const genders = useSelector((state) => state.admin.genders);
@@ -354,9 +353,7 @@ const UserRedux = () => {
                 handleEditUserFromParent={handleEditUserFromParent}
                 action={action}
                 currentPage={currentPage}
-                totalPages={totalPages}
                 setCurrentPage={setCurrentPage}
-                setTotalPages={setTotalPages}
               />
             </div>
           </div>

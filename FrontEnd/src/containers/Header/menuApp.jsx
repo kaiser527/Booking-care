@@ -62,7 +62,7 @@ export const adminMenu = [
     menus: [
       {
         name: "menu.admin.manage-handbook",
-        link: "/doctor/manage-schedule",
+        link: "/system/manage-handbook",
       },
     ],
   },

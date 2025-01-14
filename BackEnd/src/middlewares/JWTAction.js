@@ -1,13 +1,17 @@
 require("dotenv").config();
 import jwt from "jsonwebtoken";
 
-const createJWT = () => {
-  let payload = { name: "kiana", address: "Moon" };
+const nonSecurePaths = [
+  "/api/login",
+  "/api/top-doctor-home",
+  "/api/get-detail-doctor-by-id",
+];
+
+const createJWT = (payload) => {
   let key = process.env.JWT_SECRET;
   let token = null;
   try {
     token = jwt.sign(payload, key);
-    console.log(token);
   } catch (e) {
     console.log(e);
   }
@@ -16,14 +20,66 @@ const createJWT = () => {
 
 const verifyToken = (token) => {
   let key = process.env.JWT_SECRET;
-  let data = null;
+  let decoded = null;
   try {
-    let decoded = jwt.verify(token, key);
-    data = decoded;
+    decoded = jwt.verify(token, key);
   } catch (e) {
     console.log(e);
   }
-  return data;
+  return decoded;
 };
 
-export { createJWT, verifyToken };
+const checkUserJWT = (req, res, next) => {
+  if (nonSecurePaths.includes(req.path)) return next();
+  let cookie = req.cookies;
+  if (cookie && cookie.jwt) {
+    let token = cookie.jwt;
+    let decoded = verifyToken(token);
+    if (decoded) {
+      req.data = decoded;
+      console.log(req.data);
+      next();
+    } else {
+      res.status(401).json({
+        errCode: -2,
+        errMessage: "Not authenticated User!",
+      });
+    }
+  } else {
+    res.status(401).json({
+      errCode: -2,
+      errMessage: "Not authenticated User!",
+    });
+  }
+};
+
+const checkUserPermisson = (req, res, next) => {
+  if (nonSecurePaths.includes(req.path)) return next();
+  if (req.data) {
+    let email = req.data.user.email;
+    let permissions = req.data.user.roleData.permissionData;
+    let currentUrl = req.path;
+    if (!permissions || permissions.length === 0) {
+      res.status(403).json({
+        errCode: -3,
+        errMessage: "You dont't have permission to access this resource!",
+      });
+    }
+    let canAccess = permissions.some((item) => item.url === currentUrl);
+    if (canAccess) {
+      next();
+    } else {
+      res.status(403).json({
+        errCode: -3,
+        errMessage: "You dont't have permission to access this resource!",
+      });
+    }
+  } else {
+    res.status(401).json({
+      errCode: -2,
+      errMessage: "Not authenticated User!",
+    });
+  }
+};
+
+export { createJWT, verifyToken, checkUserJWT, checkUserPermisson };

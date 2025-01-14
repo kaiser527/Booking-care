@@ -34,6 +34,10 @@ const Login = () => {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.ketCode === 13) handleLogin();
+  };
+
   return (
     <div className="login-background">
       <div className="login-container">
@@ -48,6 +52,7 @@ const Login = () => {
               type="text"
               placeholder="Enter your username"
               className="form-control"
+              onKeyDown={(event) => handleKeyDown(event)}
               onChange={(event) => setEmail(event.target.value)}
             />
           </div>
@@ -62,6 +67,7 @@ const Login = () => {
                 placeholder="Enter your password"
                 className="form-control"
                 onChange={(event) => setPassword(event.target.value)}
+                onKeyDown={(event) => handleKeyDown(event)}
               />
               <span>
                 <i

@@ -87,7 +87,6 @@ export const createNewUserRedux = (data) => {
   return async (dispatch, getState) => {
     try {
       const res = await createNewUserService(data);
-      console.log("check res", res);
       if (res && res.errCode === 0) {
         dispatch(createUserSuccess());
         dispatch(fetchAllUserRedux(1, 4));
@@ -115,7 +114,6 @@ export const fetchAllUserRedux = (page, limit) => {
   return async (dispatch, getState) => {
     try {
       const res = await getAllUsers(page, limit);
-      console.log(res.data);
       if (res && res.errCode === 0) {
         let users = res.data;
         dispatch(fetchAllUserSuccess(users));

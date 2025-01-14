@@ -26,6 +26,10 @@ import {
   getDetailDoctorById,
   getDoctorMarkdown,
 } from "../controllers/doctorController";
+import { checkUserJWT, checkUserPermisson } from "../middlewares/JWTAction";
+
+//check user permission
+router.all("*", checkUserJWT, checkUserPermisson);
 
 //crud
 router.get("/", getHomePage);

@@ -1,13 +1,12 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
-import { history } from "../redux";
 import { ToastContainer } from "react-toastify";
 import {
   userIsAuthenticated,
   userIsNotAuthenticated,
 } from "../hoc/authentication";
-import { path } from "../utils";
+import { path, USER_ROLE } from "../utils";
 import Home from "../routes/Home";
 import Login from "./Auth/Login";
 import System from "../routes/System";
@@ -15,10 +14,23 @@ import HomePage from "./HomePage/HomePage";
 import CustomScrollbars from "../components/CustomScrollbars";
 import DetailDoctor from "./Patient/Doctor/DetailDoctor";
 import Doctor from "../routes/Doctor";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const App = (props) => {
   const { persistor } = props;
+
   const [bootstrapped, setBootstrapped] = useState(persistor.getState());
+
+  const userInfo = useSelector((state) => state.user.userInfo);
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (userInfo?.roleId === USER_ROLE.PATIENT) {
+      history.push("/home");
+    }
+  }, [userInfo]);
 
   const handlePersistorState = () => {
     if (bootstrapped) {

@@ -9,8 +9,9 @@ import ReactPaginate from "react-paginate";
 const TableManageUser = (props) => {
   const currentLimit = 4;
 
-  const { currentPage, totalPages, setCurrentPage, setTotalPages } = props;
+  const { currentPage, setCurrentPage } = props;
 
+  const [totalPages, setTotalPages] = useState(0);
   const [userRedux, setUserRedux] = useState([]);
 
   const dispatch = useDispatch();
@@ -24,15 +25,14 @@ const TableManageUser = (props) => {
   useEffect(() => {
     const filteredData = data.users?.filter((user) => user.email !== null);
     const nullUser = data.users?.find((user) => user.email === null);
-    if (nullUser) {
-      dispatch(actions.deleteUserRedux(nullUser?.id));
-    }
+    if (nullUser) handleDeleteUser(nullUser);
     setUserRedux(filteredData);
     setTotalPages(data.totalPages);
   }, [data.users]);
 
   const handleDeleteUser = (user) => {
     dispatch(actions.deleteUserRedux(user.id));
+    setCurrentPage(1);
   };
 
   const handleEditUser = (user) => {
@@ -109,26 +109,30 @@ const TableManageUser = (props) => {
         </tbody>
       </table>
       {totalPages > 0 && (
-        <div className="user-footer mt-4">
+        <div
+          style={{ display: "flex", justifyContent: "center" }}
+          className="mt-4 flex"
+        >
           <ReactPaginate
-            breakLabel="..."
-            breakClassName="page-item"
-            breakLinkClassName="page-link"
-            nextLabel="next >"
-            marginPagesDisplayed={4}
-            pageRangeDisplayed={3}
+            nextLabel="Next >"
             onPageChange={handlePageClick}
+            pageRangeDisplayed={3}
+            marginPagesDisplayed={2}
             pageCount={totalPages}
-            previousLabel="< previous"
-            renderOnZeroPageCount={null}
-            activeClassName="active"
-            nextClassName="page-item"
-            nextLinkClassName="page-link"
+            previousLabel="< Prev"
             pageClassName="page-item"
             pageLinkClassName="page-link"
             previousClassName="page-item"
             previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
             containerClassName="pagination"
+            activeClassName="active"
+            renderOnZeroPageCount={null}
+            forcePage={currentPage - 1}
           />
         </div>
       )}

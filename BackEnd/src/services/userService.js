@@ -1,32 +1,58 @@
+require("dotenv").config();
 import bcrypt from "bcryptjs";
 import db from "../models/index";
+import { createJWT } from "../middlewares/JWTAction";
 
 const salt = bcrypt.genSaltSync(10);
 
 const handleUserLogin = (email, password) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const userData = {}; //tra ve userData cho controller, sau do controller tra ve cho client
+      const userData = {};
       const isExist = await checkUserEmail(email);
       if (isExist) {
-        //user already exist
-        //kiem tra user co ton tai lan 2 vi neu neu ham kiem tra email o duoi tra ra true co nghia la co ton tai nguoi dung nhung trong 1 thoi diem co 1 nguoi khac xoa user do di se bi loi
         const user = await db.User.findOne({
-          //kiem tra user co ton tai bang email truyen vao co ton tai trong db kh
           where: { email: email },
-          attributes: ["email", "roleId", "password", "fullName"], //khi login thanh cong tra ra user nhung chi co 3 truong la email,roleId,password
+          attributes: ["id", "email", "roleId", "password", "fullName"],
+          include: [
+            {
+              model: db.Allcode,
+              as: "roleData",
+              attributes: ["valueEn", "valueVi"],
+            },
+          ],
+          nest: true,
           raw: true,
         });
         if (user) {
-          //compare password
-          //ham compareSync cua bcrypt co chuc nang so sanh password nguoi dung voi password da duoc ma hoa trong db neu bang thi tra ra true
-          const check = await bcrypt.compareSync(password, user.password); //password la password truyen vao user.password chinh la password da duoc ma hoa trong db
+          const check = await bcrypt.compareSync(password, user.password);
+          const permissonData = await db.Permission.findAll({
+            where: { roleId: user.roleId },
+            attributes: ["url", "description"],
+            raw: true,
+          });
+          let newRoleData = {
+            valueEn: user.roleData["valueEn"],
+            valueVi: user.roleData["valueVi"],
+            permissionData: permissonData,
+          };
+          let payload = {
+            user: {
+              email: user.email,
+              name: user.fullName,
+              roleId: user.roleId,
+              roleData: newRoleData,
+            },
+            expiresIn: process.env.JWT_EXPIRES_IN,
+          };
+          let token = createJWT(payload);
           if (check) {
-            userData.errCode = 0; //tra ra errCode = 0 la cho biet nguoi dung login thanh cong con khac 0 thi that bai(so sanh thanh cong)
+            userData.errCode = 0;
             userData.errMessage = "ok";
-            delete user.password; //vi chi muon tra ra email va roldeId nen dung delete user.password de kh hien thi thong tin password cua nguoi dung khi login thanh cong
-            userData.user = user; //khi login thanh cong se tra ra thong tin cua 1 user
-            userData.access_token = "";
+            delete user.password;
+            userData.user = user;
+            userData.user.access_token = token;
+            userData.user.roleData = newRoleData;
           } else {
             userData.errCode = 3;
             userData.errMessage = "Wrong password";

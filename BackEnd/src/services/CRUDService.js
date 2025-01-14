@@ -38,7 +38,12 @@ const hashUserPassword = (password) => {
 const getAllUser = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const users = await db.User.findAll({ raw: true });
+      const users = await db.User.findAll({
+        raw: true,
+        attributes: {
+          exclude: ["image"],
+        },
+      });
       resolve(users);
     } catch (e) {
       reject(e);

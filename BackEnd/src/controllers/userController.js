@@ -24,6 +24,12 @@ const handleLogin = async (req, res) => {
   //compare password
   //return user's info
   //access_token:JWT json web token
+  if (userData && userData.user && userData.user.access_token) {
+    res.cookie("jwt", userData.user.access_token, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 1000,
+    });
+  }
   return res.status(200).json({
     //trong hop neu email kh ton tai hoac password kh dung(login fail) thi tra nhung errCode hay message tuong ung
     errCode: userData.errCode,
@@ -35,6 +41,7 @@ const handleLogin = async (req, res) => {
 //users
 const handleGetAllUsers = async (req, res) => {
   try {
+    console.log(req.data);
     if (req.query.page && req.query.limit) {
       let { page, limit } = req.query;
       const users = await getUserWithPagination(+page, +limit);

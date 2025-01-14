@@ -9,7 +9,11 @@ import {
 
 const getHomePage = async (req, res) => {
   try {
-    const data = await db.User.findAll();
+    const data = await db.User.findAll({
+      attributes: {
+        exclude: ["image"],
+      },
+    });
     res.render("home.ejs", { data: JSON.stringify(data) });
   } catch (e) {
     console.log(e);

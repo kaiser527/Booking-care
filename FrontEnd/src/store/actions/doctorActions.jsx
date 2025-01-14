@@ -7,6 +7,7 @@ import {
   getDoctorMarkdown,
 } from "../../services/doctorService";
 import { toast } from "react-toastify";
+import { getAllCodeService } from "../../services/userService";
 
 export const fetchTopDoctor = () => {
   return async (dispatch, getState) => {
@@ -132,4 +133,29 @@ export const getDoctorMarkdownSuccess = (doctorData) => ({
 
 export const getDoctorMarkdownFailed = () => ({
   type: actionTypes.GET_DETAIL_DOCTOR_FAILED,
+});
+
+export const fetchAllScheduleTimesRedux = () => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await getAllCodeService("TIME");
+      if (res && res.errCode === 0) {
+        dispatch(fetchAllScheduleTimesSuccess(res.data));
+      } else {
+        dispatch(fetchAllScheduleTimesFailed());
+      }
+    } catch (e) {
+      dispatch(fetchAllScheduleTimesFailed());
+      console.log(e);
+    }
+  };
+};
+
+export const fetchAllScheduleTimesSuccess = (scheduleHourData) => ({
+  type: actionTypes.FETCH_ALLCODE_SCHEDULE_TIMES_SUCCESS,
+  data: scheduleHourData,
+});
+
+export const fetchAllScheduleTimesFailed = () => ({
+  type: actionTypes.FETCH_ALLCODE_SCHEDULE_TIMES_FAILED,
 });

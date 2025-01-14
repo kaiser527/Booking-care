@@ -15,7 +15,7 @@ const mdParser = new MarkdownIt(/* Markdown-it options */);
 const ManageDoctor = () => {
   const [contentMarkdown, setContentMarkdown] = useState("");
   const [contentHTML, setContentHTML] = useState("");
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [selectedDoctor, setSelectedDoctor] = useState({});
   const [description, setDescription] = useState("");
   const [listDoctor, setListDoctor] = useState([]);
   const [hasOldData, setHasOldData] = useState(false);
