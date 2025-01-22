@@ -49,8 +49,11 @@ const DatePicker = (props) => {
     disableMobile: true,
     onClose: onClose,
     onOpen: onOpen,
-    minDate: minDate,
   };
+
+  if (minDate) {
+    options.minDate = minDate;
+  }
 
   return (
     <Flatpickr

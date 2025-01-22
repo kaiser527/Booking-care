@@ -6,7 +6,7 @@ import {
   userIsAuthenticated,
   userIsNotAuthenticated,
 } from "../hoc/authentication";
-import { path, USER_ROLE } from "../utils";
+import { path } from "../utils";
 import Home from "../routes/Home";
 import Login from "./Auth/Login";
 import System from "../routes/System";
@@ -14,39 +14,49 @@ import HomePage from "./HomePage/HomePage";
 import CustomScrollbars from "../components/CustomScrollbars";
 import DetailDoctor from "./Patient/Doctor/DetailDoctor";
 import Doctor from "../routes/Doctor";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { getPastDoctorScheduleAPI } from "../services/doctorService";
+import { useDispatch } from "react-redux";
+import { history } from "../redux";
+import * as actions from "../store/actions";
 
 const App = (props) => {
   const { persistor } = props;
 
   const [bootstrapped, setBootstrapped] = useState(persistor.getState());
+  const [pastScheduleArr, setPastScheduleArr] = useState([]);
 
-  const userInfo = useSelector((state) => state.user.userInfo);
-
-  const history = useHistory();
-
-  useEffect(() => {
-    if (userInfo?.roleId === USER_ROLE.PATIENT) {
-      history.push("/home");
-    }
-  }, [userInfo]);
+  const dispatch = useDispatch();
 
   const handlePersistorState = () => {
     if (bootstrapped) {
       if (props.onBeforeLift) {
         Promise.resolve(props.onBeforeLift())
-          .then(() => setBootstrapped({ bootstrapped: true }))
-          .catch(() => setBootstrapped({ bootstrapped: true }));
+          .then(() => setBootstrapped(true))
+          .catch(() => setBootstrapped(true));
       } else {
-        setBootstrapped({ bootstrapped: true });
+        setBootstrapped(true);
       }
     }
   };
 
   useEffect(() => {
     handlePersistorState();
+    getPastDoctorSchedule();
   }, []);
+
+  useEffect(() => {
+    if (pastScheduleArr && pastScheduleArr.length > 0) {
+      let pastSchedule = pastScheduleArr.find((item) => item.date);
+      dispatch(actions.deletePastScheduleDoctorRedux(pastSchedule.date));
+    }
+  }, [pastScheduleArr]);
+
+  const getPastDoctorSchedule = async () => {
+    let res = await getPastDoctorScheduleAPI();
+    if (res && res.errCode === 0) {
+      setPastScheduleArr(res.data);
+    }
+  };
 
   return (
     <Fragment>

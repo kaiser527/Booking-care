@@ -9,6 +9,10 @@ const instance = axios.create({
   withCredentials: true,
 });
 
+instance.defaults.headers.common[
+  "Authorization"
+] = `Bearer ${localStorage.getItem("jwt")}`;
+
 instance.interceptors.response.use(
   (response) => {
     return response.data;

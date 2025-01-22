@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import HomeHeader from "../../HomePage/HomeHeader";
 import "./DetailDoctor.scss";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../store/actions";
 import { LANGUAGES } from "../../../utils";
+import DoctorSchedule from "./DoctorSchedule";
+import DetailDoctorHeader from "./DetailDoctorHeader";
 
 const DetailDoctor = () => {
   const params = useParams();
@@ -22,7 +23,7 @@ const DetailDoctor = () => {
 
   return (
     <>
-      <HomeHeader isShowBanner={false} />
+      <DetailDoctorHeader />
       <div className="doctor-detail-container">
         <div className="intro-doctor">
           <div
@@ -53,7 +54,12 @@ const DetailDoctor = () => {
             </div>
           </div>
         </div>
-        <div className="schedule-doctor"></div>
+        <div className="schedule-doctor">
+          <div className="content-left">
+            <DoctorSchedule />
+          </div>
+          <div className="content-right"></div>
+        </div>
         <div className="detail-info-doctor">
           {detailDoctor &&
             detailDoctor.Markdown &&

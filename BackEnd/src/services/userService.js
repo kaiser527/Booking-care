@@ -13,12 +13,12 @@ const handleUserLogin = (email, password) => {
       if (isExist) {
         const user = await db.User.findOne({
           where: { email: email },
-          attributes: ["id", "email", "roleId", "password", "fullName"],
+          attributes: ["id", "email", "password", "fullName"],
           include: [
             {
               model: db.Allcode,
               as: "roleData",
-              attributes: ["valueEn", "valueVi"],
+              attributes: ["keyMap", "valueEn", "valueVi"],
             },
           ],
           nest: true,
@@ -27,20 +27,20 @@ const handleUserLogin = (email, password) => {
         if (user) {
           const check = await bcrypt.compareSync(password, user.password);
           const permissonData = await db.Permission.findAll({
-            where: { roleId: user.roleId },
+            where: { roleId: user.roleData.keyMap },
             attributes: ["url", "description"],
             raw: true,
           });
           let newRoleData = {
-            valueEn: user.roleData["valueEn"],
-            valueVi: user.roleData["valueVi"],
+            roleId: user.roleData.keyMap,
+            valueEn: user.roleData.valueEn,
+            valueVi: user.roleData.valueVi,
             permissionData: permissonData,
           };
           let payload = {
             user: {
               email: user.email,
               name: user.fullName,
-              roleId: user.roleId,
               roleData: newRoleData,
             },
             expiresIn: process.env.JWT_EXPIRES_IN,
@@ -49,9 +49,10 @@ const handleUserLogin = (email, password) => {
           if (check) {
             userData.errCode = 0;
             userData.errMessage = "ok";
+            userData.access_token = token;
             delete user.password;
+            delete user.roleId;
             userData.user = user;
-            userData.user.access_token = token;
             userData.user.roleData = newRoleData;
           } else {
             userData.errCode = 3;
@@ -75,17 +76,13 @@ const handleUserLogin = (email, password) => {
 
 //function check email exist in database
 const checkUserEmail = (userEmail) => {
-  //vi kiem tra email o trong db la hanh dong ton thoi gian nen dung promise de cho
   return new Promise(async (resolve, reject) => {
     try {
-      //db.Userla tu db goi tham chieu den model User
       const user = await db.User.findOne({
-        //goi den hem findOne cua sequelize la tim 1 ban ghi trong db
-        where: { email: userEmail }, //vi o day muon kiem tra email nen cho dieu kien where bang chinh useEmail truyen vao
+        where: { email: userEmail },
       });
-      if (user) resolve(true); //neu tim thay nguoi dung thi tra ve true
+      if (user) resolve(true);
       else resolve(false);
-      //resolve = return
     } catch (e) {
       reject(e);
     }
@@ -99,7 +96,7 @@ const getAllUsers = (userId) => {
       if (userId === "ALL") {
         users = await db.User.findAll({
           attributes: {
-            exclude: ["password"],
+            exclude: ["password", "image"],
           },
           raw: true,
         });
@@ -108,7 +105,7 @@ const getAllUsers = (userId) => {
         users = await db.User.findOne({
           where: { id: userId },
           attributes: {
-            exclude: ["password"],
+            exclude: ["password", "image"],
           },
           raw: true,
         });

@@ -189,3 +189,43 @@ export const editUserSuccess = () => ({
 export const editUserFailed = () => ({
   type: actionTypes.EDIT_USER_FAILED,
 });
+
+export const fetchRequiredDoctorInfo = () => {
+  return async (dispatch, getState) => {
+    try {
+      const resProvince = await getAllCodeService("PROVINCE");
+      const resPrice = await getAllCodeService("PRICE");
+      const resPayment = await getAllCodeService("PAYMENT");
+      if (
+        resProvince &&
+        resProvince.errCode === 0 &&
+        resPrice &&
+        resPrice.errCode === 0 &&
+        resPayment &&
+        resPayment.errCode === 0
+      ) {
+        dispatch(
+          fetchRequiredDoctorInfoSuccess({
+            resPrice: resPrice.data,
+            resProvince: resProvince.data,
+            resPayment: resPayment.data,
+          })
+        );
+      } else {
+        dispatch(fetchRequiredDoctorInfoFailed());
+      }
+    } catch (e) {
+      dispatch(fetchRequiredDoctorInfoFailed());
+      console.log(e);
+    }
+  };
+};
+
+export const fetchRequiredDoctorInfoSuccess = (infoData) => ({
+  type: actionTypes.FETCH_REQUIRED_DOCTOR_INFO_SUCCESS,
+  data: infoData,
+});
+
+export const fetchRequiredDoctorInfoFailed = () => ({
+  type: actionTypes.FETCH_REQUIRED_DOCTOR_INFO_FAILED,
+});

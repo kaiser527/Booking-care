@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import UserManage from "../containers/System/UserManage";
@@ -17,7 +17,7 @@ const System = () => {
       {isLoggedIn && <Header />}
       <div className="system-container">
         <div className="system-list">
-          {userInfo.roleId === USER_ROLE.ADMIN && (
+          {userInfo?.roleData.roleId === USER_ROLE.ADMIN && (
             <Switch>
               <Route path="/system/user-manage" component={UserManage} />
               <Route path="/system/user-redux" component={UserRedux} />
@@ -29,7 +29,7 @@ const System = () => {
               />
             </Switch>
           )}
-          {userInfo.roleId === USER_ROLE.DOCTOR && (
+          {userInfo?.roleData.roleId === USER_ROLE.DOCTOR && (
             <Switch>
               <Route
                 component={() => {

@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, injectIntl } from "react-intl";
 import * as actions from "../../../store/actions";
 import Select from "react-select";
 import DatePicker from "../../../components/Input/DatePicker";
 import "./ManageSchedule.scss";
-import { dateFormat, LANGUAGES, USER_ROLE } from "../../../utils";
+import { LANGUAGES, USER_ROLE } from "../../../utils";
 import _ from "lodash";
-import moment from "moment";
 import { toast } from "react-toastify";
 
-const ManageSchedule = () => {
+const ManageSchedule = (props) => {
+  const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
+
   const [selectedDoctor, setSelectedDoctor] = useState({});
   const [listDoctor, setListDoctor] = useState([]);
   const [currentDate, setCurrentDate] = useState("");
@@ -24,17 +25,15 @@ const ManageSchedule = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (userInfo.roleId === USER_ROLE.ADMIN) {
+    if (userInfo?.roleData.roleId === USER_ROLE.ADMIN) {
       dispatch(actions.fetchAllDoctor());
     }
     dispatch(actions.fetchAllScheduleTimesRedux());
   }, []);
 
   useEffect(() => {
-    if (userInfo.roleId === USER_ROLE.ADMIN) {
-      let dataSelect = buildInputSelect(doctors);
-      setListDoctor(dataSelect);
-    }
+    let dataSelect = buildInputSelect(doctors);
+    setListDoctor(dataSelect);
   }, [doctors]);
 
   useEffect(() => {
@@ -48,7 +47,6 @@ const ManageSchedule = () => {
 
   const buildInputSelect = (data) => {
     let result = [];
-
     if (data && data.length > 0) {
       data.map((item, index) => {
         let object = {};
@@ -57,13 +55,11 @@ const ManageSchedule = () => {
         result.push(object);
       });
     }
-
     return result;
   };
 
   const handleChange = (selectedDoctor) => {
     setSelectedDoctor(selectedDoctor);
-    console.log(selectedDoctor);
   };
 
   const handleOnChangeDatePicker = (date) => {
@@ -73,37 +69,36 @@ const ManageSchedule = () => {
   const handleClickBtnTime = (time) => {
     let rangeTimeCopy = _.cloneDeep(rangeTime);
     if (rangeTime && rangeTime.length > 0) {
-      let foundTime = rangeTimeCopy.findIndex((item) => item.id === time.id);
-      if (foundTime > -1) {
-        rangeTimeCopy[foundTime].isSelected =
-          !rangeTimeCopy[foundTime].isSelected;
+      let index = rangeTimeCopy.findIndex((item) => item.id === time.id);
+      if (index > -1) {
+        rangeTimeCopy[index].isSelected = !rangeTimeCopy[index].isSelected;
       }
     }
     setRangeTime(rangeTimeCopy);
   };
 
   const handleSaveSchedule = () => {
-    let formattedDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
+    let formattedDate = new Date(currentDate).getTime();
     let result = [];
+    let check = userInfo?.roleData.roleId === USER_ROLE.DOCTOR;
     if (!currentDate) {
       toast.error("Invalid date");
       return;
     }
-    if (userInfo.roleId === USER_ROLE.ADMIN) {
+    if (userInfo?.roleData.roleId === USER_ROLE.ADMIN) {
       if (selectedDoctor && _.isEmpty(selectedDoctor)) {
         toast.error("Invalid doctor");
         return;
       }
     }
     if (rangeTime && rangeTime.length > 0) {
-      let check = userInfo.roleId === USER_ROLE.DOCTOR;
       let selectedTime = rangeTime.filter((item) => item.isSelected === true);
       if (selectedTime && selectedTime.length > 0) {
         selectedTime.map((time) => {
           let object = {};
           object.doctorId = check ? userInfo.id : selectedDoctor.value;
           object.date = formattedDate;
-          object.time = time.keyMap;
+          object.timeType = time.keyMap;
           result.push(object);
         });
       } else {
@@ -111,7 +106,13 @@ const ManageSchedule = () => {
         return;
       }
     }
-    console.log(result);
+    dispatch(
+      actions.bulkCreateDoctorRedux({
+        arrSchedule: result,
+        doctorId: check ? userInfo.id : selectedDoctor.value,
+        date: formattedDate,
+      })
+    );
   };
 
   return (
@@ -121,15 +122,18 @@ const ManageSchedule = () => {
       </div>
       <div className="container">
         <div className="row">
-          {userInfo.roleId === USER_ROLE.ADMIN && (
+          {userInfo?.roleData.roleId === USER_ROLE.ADMIN && (
             <div className="col-6 form-group">
               <label>
                 <FormattedMessage id="manage-schedule.choose-doctor" />
               </label>
               <Select
-                defaultValue={selectedDoctor}
+                defaultValue={selectedDoctor[0]}
                 onChange={handleChange}
                 options={listDoctor}
+                placeholder={props.intl.formatMessage({
+                  id: "manage-doctor.placeholder",
+                })}
               />
             </div>
           )}
@@ -140,8 +144,11 @@ const ManageSchedule = () => {
             <DatePicker
               className="form-control"
               onChange={handleOnChangeDatePicker}
-              value={currentDate[0]}
-              minDate={new Date()}
+              value={currentDate}
+              minDate={yesterday}
+              placeholder={props.intl.formatMessage({
+                id: "manage-schedule.placeholder",
+              })}
             />
           </div>
           <div className="col-12 pick-hour-container">
@@ -177,4 +184,4 @@ const ManageSchedule = () => {
   );
 };
 
-export default ManageSchedule;
+export default injectIntl(ManageSchedule);

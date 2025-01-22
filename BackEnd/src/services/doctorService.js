@@ -1,4 +1,7 @@
+require("dotenv").config();
 import db from "../models/index";
+import _ from "lodash";
+import moment from "moment";
 
 const getTopDoctorHomeService = (limit) => {
   return new Promise(async (resolve, reject) => {
@@ -169,10 +172,161 @@ const getDoctorMarkdownById = (doctorId) => {
   });
 };
 
+const bulkCreateScheduleService = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.arrSchedule || !data.doctorId || !data.date) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required paramenter!",
+        });
+      } else {
+        let schedule = data.arrSchedule;
+        if (schedule && schedule.length > 0) {
+          schedule = schedule.map((item) => {
+            item.maxNumber = +process.env.MAX_NUMBER_SCHEDULE;
+            return item;
+          });
+        }
+        let existing = await db.Schedule.findAll({
+          where: {
+            doctorId: data.doctorId,
+            date: data.date,
+          },
+          raw: true,
+          attributes: ["timeType", "date", "doctorId", "maxNumber"],
+        });
+        if (existing && existing.length > 0) {
+          existing = existing.map((item) => {
+            item.date = new Date(item.date).getTime();
+            return item;
+          });
+        }
+        let toCreate = _.differenceWith(schedule, existing, (a, b) => {
+          return a.timeType === b.timeType && a.date === b.date;
+        });
+        if (toCreate && toCreate.length > 0) {
+          await db.Schedule.bulkCreate(toCreate);
+        }
+        resolve({
+          errCode: 0,
+          message: "Ok",
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getScheduleByDateService = (doctorId, date) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!doctorId || !date) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required paramenter!",
+        });
+      } else {
+        let dataSchedule = await db.Schedule.findAll({
+          where: { doctorId: doctorId, date: date },
+          include: [
+            {
+              model: db.Allcode,
+              as: "scheduleData",
+              attributes: ["valueVi", "valueEn"],
+            },
+          ],
+          raw: true,
+          nest: true,
+        });
+        if (!dataSchedule) dataSchedule = [];
+        resolve({
+          errCode: 0,
+          data: dataSchedule,
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const deletePastScheduleDoctorService = (date) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!date) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required paramenter!",
+        });
+      } else {
+        let currentDate = moment(new Date()).format("YYYY-MM-DD");
+        if (date < currentDate) {
+          let dateDelete = await db.Schedule.findOne({
+            where: { date: date },
+          });
+          if (dateDelete) {
+            await db.Schedule.destroy({
+              where: { date: date },
+            });
+            resolve({
+              errCode: 0,
+              message: "Delete past date succeed!",
+            });
+          } else {
+            resolve({
+              errCode: 2,
+              errMessage: "Not found date",
+            });
+          }
+        } else {
+          resolve({
+            errCode: 2,
+            errMessage: "Invalid date",
+          });
+        }
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getPastDoctorScheduleService = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let results = await db.Schedule.findAll({
+        raw: true,
+        attributes: ["date", "doctorId"],
+      });
+      let formattedResults = [];
+      let currentDate = moment(new Date()).format("YYYY-MM-DD");
+      results.map((item, index) => {
+        let obj = {};
+        let formattedDate = moment(item.date).format("YYYY-MM-DD");
+        obj.date = formattedDate;
+        obj.doctorId = item.doctorId;
+        if (formattedDate < currentDate) formattedResults.push(obj);
+      });
+      resolve({
+        errCode: 0,
+        data: formattedResults,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 export {
   getTopDoctorHomeService,
   getAllDoctorsService,
   saveDetailInfoDoctor,
   getDetailDoctorByIdService,
   getDoctorMarkdownById,
+  bulkCreateScheduleService,
+  getScheduleByDateService,
+  deletePastScheduleDoctorService,
+  getPastDoctorScheduleService,
 };

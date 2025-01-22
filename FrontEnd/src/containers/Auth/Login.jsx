@@ -25,6 +25,7 @@ const Login = () => {
       if (data && data.errCode === 0) {
         //khi login thanh cong
         dispatch(actions.userLoginSuccess(data.user));
+        localStorage.setItem("jwt", data.access_token);
       }
     } catch (e) {
       if (e.response && e.response.data) {

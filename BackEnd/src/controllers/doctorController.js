@@ -4,6 +4,10 @@ import {
   saveDetailInfoDoctor,
   getDetailDoctorByIdService,
   getDoctorMarkdownById,
+  bulkCreateScheduleService,
+  getScheduleByDateService,
+  deletePastScheduleDoctorService,
+  getPastDoctorScheduleService,
 } from "../services/doctorService";
 
 const getTopDoctorHome = async (req, res) => {
@@ -73,10 +77,69 @@ const getDoctorMarkdown = async (req, res) => {
   }
 };
 
+const bulkCreateSchedule = async (req, res) => {
+  try {
+    let response = await bulkCreateScheduleService(req.body);
+    res.status(200).json(response);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      errCode: -3,
+      errMessage: "Error from Server!",
+    });
+  }
+};
+
+const getScheduleByDate = async (req, res) => {
+  try {
+    let response = await getScheduleByDateService(
+      req.query.doctorId,
+      req.query.date
+    );
+    res.status(200).json(response);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      errCode: -3,
+      errMessage: "Error from Server!",
+    });
+  }
+};
+
+const deletePastScheduleDoctor = async (req, res) => {
+  try {
+    let response = await deletePastScheduleDoctorService(req.query.date);
+    res.status(200).json(response);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      errCode: -3,
+      errMessage: "Error from Server!",
+    });
+  }
+};
+
+const getPastDoctorSchedule = async (req, res) => {
+  try {
+    let response = await getPastDoctorScheduleService();
+    res.status(200).json(response);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      errCode: -3,
+      errMessage: "Error from Server!",
+    });
+  }
+};
+
 export {
   getTopDoctorHome,
   getAllDoctors,
   postInfoDoctor,
   getDetailDoctorById,
   getDoctorMarkdown,
+  bulkCreateSchedule,
+  getScheduleByDate,
+  deletePastScheduleDoctor,
+  getPastDoctorSchedule,
 };

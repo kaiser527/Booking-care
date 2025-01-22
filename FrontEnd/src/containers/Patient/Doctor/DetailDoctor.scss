@@ -2,7 +2,7 @@
   .intro-doctor {
     display: flex;
     align-items: center;
-    margin: 10px 77px;
+    margin: 10px 150px;
     .content-left {
       width: 120px;
       background: center center no-repeat;
@@ -25,9 +25,20 @@
       }
     }
   }
+  .schedule-doctor {
+    margin: 10px 150px;
+    display: flex;
+    min-height: 180px;
+    .content-left {
+      width: 50%;
+    }
+    .content-right {
+      width: 50%;
+    }
+  }
   .detail-info-doctor {
     background-color: #f9f9f9;
-    padding: 10px 100px;
+    padding: 10px 150px;
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     p {

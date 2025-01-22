@@ -10,6 +10,7 @@ const app = express(); //khai bao app
 const port = process.env.PORT || 8888; //trong truong hop PORT kh chay thi thuc hien cai con lai
 const hostname = process.env.HOST_NAME;
 
+//fix middleware cors
 app.use(cors({ credentials: true, origin: true }));
 
 //use cors

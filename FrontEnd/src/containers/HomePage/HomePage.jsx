@@ -21,7 +21,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <HomeHeader isShowBanner={true} />
+      <HomeHeader />
       <Specialty settings={settings} />
       <MedicalFacility settings={settings} />
       <OutStandingDoctor settings={settings} />

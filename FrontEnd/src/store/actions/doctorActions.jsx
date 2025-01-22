@@ -5,6 +5,9 @@ import {
   saveDetailDoctor,
   getDetailInforDoctor,
   getDoctorMarkdown,
+  saveBulkScheduleDoctor,
+  getScheduleDoctorByDate,
+  deletePastScheduleDoctorAPI,
 } from "../../services/doctorService";
 import { toast } from "react-toastify";
 import { getAllCodeService } from "../../services/userService";
@@ -158,4 +161,81 @@ export const fetchAllScheduleTimesSuccess = (scheduleHourData) => ({
 
 export const fetchAllScheduleTimesFailed = () => ({
   type: actionTypes.FETCH_ALLCODE_SCHEDULE_TIMES_FAILED,
+});
+
+export const bulkCreateDoctorRedux = (data) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await saveBulkScheduleDoctor(data);
+      if (res && res.errCode === 0) {
+        dispatch(bulkCreateDoctorSuccess());
+        toast.success(res.message);
+      } else {
+        dispatch(bulkCreateDoctorSuccess());
+        toast.error(res.errMessage);
+      }
+    } catch (e) {
+      dispatch(bulkCreateDoctorSuccess());
+      console.log(e);
+    }
+  };
+};
+
+export const bulkCreateDoctorSuccess = () => ({
+  type: actionTypes.SAVE_BULK_SCHEDULE_DOCTOR_SUCCESS,
+});
+
+export const bulkCreateDoctorFailed = () => ({
+  type: actionTypes.SAVE_BULK_SCHEDULE_DOCTOR_FAILED,
+});
+
+export const getScheduleDoctorByDateRedux = (doctorId, date) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await getScheduleDoctorByDate(doctorId, date);
+      if (res && res.errCode === 0) {
+        dispatch(getScheduleDoctorByDateSuccess(res.data));
+      } else {
+        dispatch(getScheduleDoctorByDateFailed());
+      }
+    } catch (e) {
+      dispatch(getScheduleDoctorByDateFailed());
+      console.log(e);
+    }
+  };
+};
+
+export const getScheduleDoctorByDateSuccess = (scheduleData) => ({
+  type: actionTypes.GET_SCHEDULE_DOCTOR_BY_DATE_SUCCESS,
+  data: scheduleData,
+});
+
+export const getScheduleDoctorByDateFailed = () => ({
+  type: actionTypes.GET_SCHEDULE_DOCTOR_BY_DATE_FAILED,
+});
+
+export const deletePastScheduleDoctorRedux = (date) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await deletePastScheduleDoctorAPI(date);
+      if (res && res.errCode === 0) {
+        dispatch(deletePastScheduleDoctorSuccess());
+        toast.success(res.message);
+      } else {
+        dispatch(deletePastScheduleDoctorFailed());
+        toast.error(res.errMessage);
+      }
+    } catch (e) {
+      dispatch(deletePastScheduleDoctorFailed());
+      console.log(e);
+    }
+  };
+};
+
+export const deletePastScheduleDoctorSuccess = () => ({
+  type: actionTypes.DELETE_PAST_SCHEDULE_DOCTOR_SUCCESS,
+});
+
+export const deletePastScheduleDoctorFailed = () => ({
+  type: actionTypes.DELETE_PAST_SCHEDULE_DOCTOR_FAILED,
 });

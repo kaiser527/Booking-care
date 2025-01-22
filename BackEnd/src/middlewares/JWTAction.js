@@ -5,6 +5,10 @@ const nonSecurePaths = [
   "/api/login",
   "/api/top-doctor-home",
   "/api/get-detail-doctor-by-id",
+  "/api/logout",
+  "/api/get-schedule-doctor-by-date",
+  "/api/delete-past-schedule-doctor",
+  "/api/get-past-doctor-schedule",
 ];
 
 const createJWT = (payload) => {
@@ -29,15 +33,25 @@ const verifyToken = (token) => {
   return decoded;
 };
 
+const extractToken = (req) => {
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.split(" ")[0] === "Bearer"
+  ) {
+    return req.headers.authorization.split(" ")[1];
+  }
+  return null;
+};
+
 const checkUserJWT = (req, res, next) => {
   if (nonSecurePaths.includes(req.path)) return next();
   let cookie = req.cookies;
-  if (cookie && cookie.jwt) {
-    let token = cookie.jwt;
+  let tokenFromHeader = extractToken(req);
+  if ((cookie && cookie.jwt) || tokenFromHeader) {
+    let token = cookie && cookie.jwt ? cookie.jwt : tokenFromHeader;
     let decoded = verifyToken(token);
     if (decoded) {
       req.data = decoded;
-      console.log(req.data);
       next();
     } else {
       res.status(401).json({
@@ -61,7 +75,7 @@ const checkUserPermisson = (req, res, next) => {
     let currentUrl = req.path;
     if (!permissions || permissions.length === 0) {
       res.status(403).json({
-        errCode: -3,
+        errCode: -4,
         errMessage: "You dont't have permission to access this resource!",
       });
     }
@@ -70,7 +84,7 @@ const checkUserPermisson = (req, res, next) => {
       next();
     } else {
       res.status(403).json({
-        errCode: -3,
+        errCode: -4,
         errMessage: "You dont't have permission to access this resource!",
       });
     }

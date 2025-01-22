@@ -5,6 +5,7 @@ import * as actions from "../../../store/actions";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import ReactPaginate from "react-paginate";
+import { deleteUserService, getNullUsers } from "../../../services/userService";
 
 const TableManageUser = (props) => {
   const currentLimit = 4;
@@ -12,23 +13,41 @@ const TableManageUser = (props) => {
   const { currentPage, setCurrentPage } = props;
 
   const [totalPages, setTotalPages] = useState(0);
-  const [userRedux, setUserRedux] = useState([]);
+  const [nullData, setNullData] = useState([]);
 
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.admin.users);
+
+  const nullUser = nullData?.find((user) => user.email === null);
 
   useEffect(() => {
     dispatch(actions.fetchAllUserRedux(currentPage, currentLimit));
   }, [currentPage]);
 
   useEffect(() => {
-    const filteredData = data.users?.filter((user) => user.email !== null);
-    const nullUser = data.users?.find((user) => user.email === null);
-    if (nullUser) handleDeleteUser(nullUser);
-    setUserRedux(filteredData);
+    getUndefineUser();
+  }, []);
+
+  useEffect(() => {
+    if (nullUser) {
+      deleteNullUser(nullUser.id);
+    }
+  }, [nullData]);
+
+  useEffect(() => {
     setTotalPages(data.totalPages);
-  }, [data.users]);
+  }, [data]);
+
+  const getUndefineUser = async () => {
+    let res = await getNullUsers();
+    setNullData(res.users);
+  };
+
+  const deleteNullUser = async (id) => {
+    await deleteUserService(id);
+    getUndefineUser();
+  };
 
   const handleDeleteUser = (user) => {
     dispatch(actions.deleteUserRedux(user.id));
@@ -75,9 +94,9 @@ const TableManageUser = (props) => {
           </tr>
         </thead>
         <tbody>
-          {userRedux &&
-            userRedux.length > 0 &&
-            userRedux.map((user, index) => {
+          {data.users &&
+            data.users.length > 0 &&
+            data.users.map((user, index) => {
               return (
                 <tr key={`table-user-${index}`}>
                   <td>{user.email}</td>

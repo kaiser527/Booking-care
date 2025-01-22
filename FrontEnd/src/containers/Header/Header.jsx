@@ -7,6 +7,7 @@ import "./Header.scss";
 import { LANGUAGES, USER_ROLE } from "../../utils";
 import { FormattedMessage } from "react-intl";
 import _ from "lodash";
+import { useHistory } from "react-router-dom";
 
 const Header = () => {
   const [menuApp, setMenuApp] = useState([]);
@@ -20,15 +21,20 @@ const Header = () => {
     dispatch(actions.changeLanguageApp(language));
   };
 
+  const history = useHistory();
+
   useEffect(() => {
     let menu = [];
     if (userInfo && !_.isEmpty(userInfo)) {
-      let role = userInfo.roleId;
+      let role = userInfo?.roleData.roleId;
       if (role === USER_ROLE.ADMIN) {
         menu = adminMenu;
       }
       if (role === USER_ROLE.DOCTOR) {
         menu = doctorMenu;
+      }
+      if (role === USER_ROLE.PATIENT) {
+        history.push("/home");
       }
     }
     setMenuApp(menu);

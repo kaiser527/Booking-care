@@ -1,4 +1,5 @@
 import actionTypes from "./actionTypes";
+import { handleLogout } from "../../services/userService";
 
 export const addUserSuccess = () => ({
   type: actionTypes.ADD_USER_SUCCESS,
@@ -13,6 +14,23 @@ export const userLoginFail = () => ({
   type: actionTypes.USER_LOGIN_FAIL,
 });
 
-export const processLogout = () => ({
+export const processLogoutSuccess = () => ({
   type: actionTypes.PROCESS_LOGOUT,
 });
+
+export const processLogout = () => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await handleLogout();
+      if (res && res.errCode === 0) {
+        dispatch(processLogoutSuccess());
+        localStorage.removeItem("jwt");
+      } else {
+        dispatch(userLoginFail());
+      }
+    } catch (e) {
+      dispatch(userLoginFail());
+      console.log(e);
+    }
+  };
+};

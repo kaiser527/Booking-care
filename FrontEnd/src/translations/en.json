@@ -2,7 +2,7 @@
   "home-header": {
     "speciality": "Specialty",
     "search-doctor": "Find doctor by specialty",
-    "health-facility": "Health facilities",
+    "health-facility": "Facility",
     "select-room": "Choose hospital clinic",
     "doctor": "Doctor",
     "select-doctor": "Choose a good doctor",
@@ -69,11 +69,23 @@
   },
 
   "manage-doctor": {
-    "select-doctor": "Select Doctor:",
+    "select-doctor": "Doctor:",
     "add-info": "Add more Information for Doctor",
     "description": "Description",
     "save-info": "Save info",
-    "create-info": "Create info"
+    "create-info": "Create info",
+    "placeholder": "Select doctor",
+    "info-placeholder": {
+      "price": "Select examination price",
+      "payment-method": "Select payment method",
+      "province": "Select province"
+    },
+    "price": "Examination price",
+    "payment": "Payment method",
+    "province": "Province",
+    "clinic-name": "Clinic name",
+    "clinic-address": "Clinic address",
+    "note": "Note"
   },
 
   "homepage": {
@@ -83,8 +95,22 @@
 
   "manage-schedule": {
     "title": "Manage doctor's examination plan",
-    "choose-doctor": "Select doctor",
-    "choose-date": "Select date",
-    "save-info": "Save info"
+    "choose-doctor": "Doctor",
+    "choose-date": "Examination calendar",
+    "save-info": "Save info",
+    "placeholder": "Select date"
+  },
+
+  "patient": {
+    "detail-doctor": {
+      "schedule": "Schedule",
+      "no-schedule": "Doctor doesn't have any schedule at this time",
+      "today": "Today",
+      "book": "And book for free",
+      "choose": "Choose",
+      "header": {
+        "support": "Support"
+      }
+    }
   }
 }
