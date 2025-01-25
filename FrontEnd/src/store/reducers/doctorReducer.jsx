@@ -7,6 +7,7 @@ const initialState = {
   doctorMarkdown: {},
   scheduleTimes: [],
   doctorSchedule: [],
+  profileDoctor: {},
 };
 
 const doctorReducer = (state = initialState, action) => {
@@ -80,6 +81,18 @@ const doctorReducer = (state = initialState, action) => {
 
     case actionTypes.GET_SCHEDULE_DOCTOR_BY_DATE_FAILED:
       copyState.doctorSchedule = [];
+      return {
+        ...copyState,
+      };
+
+    case actionTypes.GET_DOCTOR_PROFILE_SUCCESS:
+      copyState.profileDoctor = action.data;
+      return {
+        ...copyState,
+      };
+
+    case actionTypes.GET_DOCTOR_PROFILE_FAILED:
+      copyState.profileDoctor = {};
       return {
         ...copyState,
       };

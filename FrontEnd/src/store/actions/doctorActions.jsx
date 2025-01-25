@@ -8,6 +8,7 @@ import {
   saveBulkScheduleDoctor,
   getScheduleDoctorByDate,
   deletePastScheduleDoctorAPI,
+  getProfileDoctor,
 } from "../../services/doctorService";
 import { toast } from "react-toastify";
 import { getAllCodeService } from "../../services/userService";
@@ -238,4 +239,29 @@ export const deletePastScheduleDoctorSuccess = () => ({
 
 export const deletePastScheduleDoctorFailed = () => ({
   type: actionTypes.DELETE_PAST_SCHEDULE_DOCTOR_FAILED,
+});
+
+export const getProfileDoctorRedux = (id) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await getProfileDoctor(id);
+      if (res && res.errCode === 0) {
+        dispatch(getProfileDoctorSuccess(res.data));
+      } else {
+        dispatch(getProfileDoctorFailed());
+      }
+    } catch (e) {
+      dispatch(getProfileDoctorFailed());
+      console.log(e);
+    }
+  };
+};
+
+export const getProfileDoctorSuccess = (doctorData) => ({
+  type: actionTypes.GET_DOCTOR_PROFILE_SUCCESS,
+  data: doctorData,
+});
+
+export const getProfileDoctorFailed = () => ({
+  type: actionTypes.GET_DOCTOR_PROFILE_FAILED,
 });

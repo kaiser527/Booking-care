@@ -13,21 +13,21 @@ const handleUserLogin = (email, password) => {
       if (isExist) {
         const user = await db.User.findOne({
           where: { email: email },
-          attributes: ["id", "email", "password", "fullName"],
+          attributes: ["id", "roleId", "email", "password", "fullName"],
           include: [
             {
               model: db.Allcode,
               as: "roleData",
-              attributes: ["keyMap", "valueEn", "valueVi"],
+              attributes: ["valueEn", "valueVi"],
             },
           ],
           nest: true,
           raw: true,
         });
         if (user) {
-          const check = await bcrypt.compareSync(password, user.password);
+          const check = bcrypt.compareSync(password, user.password);
           const permissonData = await db.Permission.findAll({
-            where: { roleId: user.roleData.keyMap },
+            where: { roleId: user.roleId },
             attributes: ["url", "description"],
             raw: true,
           });
@@ -49,11 +49,10 @@ const handleUserLogin = (email, password) => {
           if (check) {
             userData.errCode = 0;
             userData.errMessage = "ok";
-            userData.access_token = token;
             delete user.password;
-            delete user.roleId;
+            delete user.roleData;
             userData.user = user;
-            userData.user.roleData = newRoleData;
+            userData.user.access_token = token;
           } else {
             userData.errCode = 3;
             userData.errMessage = "Wrong password";

@@ -20,7 +20,8 @@
     "child3": "General examination",
     "child4": "Medical tests",
     "child5": "Mental health",
-    "child6": "Dental examination"
+    "child6": "Dental examination",
+    "child7": "Search for specialty"
   },
 
   "auth": {
@@ -28,7 +29,9 @@
       "login": "Login",
       "password": "Password",
       "forgot": "Forgot your password ?",
-      "or-login-with": "Or Login With"
+      "or-login-with": "Or Login With",
+      "placeholder-email": "Enter your email",
+      "placeholder-password": "Enter your password"
     }
   },
 
@@ -111,6 +114,13 @@
       "header": {
         "support": "Support"
       }
+    },
+    "extra-infor-doctor": {
+      "text-address": "Clinic address",
+      "price": "Exam price",
+      "show": "Show detail",
+      "hide": "Hide dedail",
+      "payment": "Patient can pay with:"
     }
   }
 }

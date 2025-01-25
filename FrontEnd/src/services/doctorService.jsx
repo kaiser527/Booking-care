@@ -38,6 +38,10 @@ const getPastDoctorScheduleAPI = () => {
   return axios.get("api/get-past-doctor-schedule");
 };
 
+const getProfileDoctor = (id) => {
+  return axios.get(`api/get-profile-doctor-by-id?id=${id}`);
+};
+
 export {
   getTopDoctorHomeService,
   getAllDoctors,
@@ -48,4 +52,5 @@ export {
   getScheduleDoctorByDate,
   deletePastScheduleDoctorAPI,
   getPastDoctorScheduleAPI,
+  getProfileDoctor,
 };

@@ -3,9 +3,9 @@ import * as actions from "../../store/actions";
 import "./Login.scss";
 import { handleLoginApi } from "../../services/userService";
 import { useDispatch } from "react-redux";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, injectIntl } from "react-intl";
 
-const Login = () => {
+const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPassword, setIshowPassword] = useState(false);
@@ -25,7 +25,6 @@ const Login = () => {
       if (data && data.errCode === 0) {
         //khi login thanh cong
         dispatch(actions.userLoginSuccess(data.user));
-        localStorage.setItem("jwt", data.access_token);
       }
     } catch (e) {
       if (e.response && e.response.data) {
@@ -51,7 +50,9 @@ const Login = () => {
             <input
               value={email}
               type="text"
-              placeholder="Enter your username"
+              placeholder={props.intl.formatMessage({
+                id: "auth.login.placeholder-email",
+              })}
               className="form-control"
               onKeyDown={(event) => handleKeyDown(event)}
               onChange={(event) => setEmail(event.target.value)}
@@ -65,7 +66,9 @@ const Login = () => {
               <input
                 value={password}
                 type={isShowPassword ? "text" : "password"}
-                placeholder="Enter your password"
+                placeholder={props.intl.formatMessage({
+                  id: "auth.login.placeholder-password",
+                })}
                 className="form-control"
                 onChange={(event) => setPassword(event.target.value)}
                 onKeyDown={(event) => handleKeyDown(event)}
@@ -106,4 +109,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default injectIntl(Login);

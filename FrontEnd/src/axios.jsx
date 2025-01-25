@@ -9,9 +9,11 @@ const instance = axios.create({
   withCredentials: true,
 });
 
-instance.defaults.headers.common[
-  "Authorization"
-] = `Bearer ${localStorage.getItem("jwt")}`;
+instance.interceptors.request.use((config) => {
+  const token = reduxStore.getState()?.user?.userInfo?.access_token;
+  config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
 instance.interceptors.response.use(
   (response) => {

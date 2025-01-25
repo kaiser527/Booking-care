@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../store/actions";
 import { LANGUAGES } from "../../../utils";
 import DoctorSchedule from "./DoctorSchedule";
-import DetailDoctorHeader from "./DetailDoctorHeader";
+import DoctorExtraInfor from "./DoctorExtraInfor";
+import SectionHeader from "../SectionHeader";
 
 const DetailDoctor = () => {
   const params = useParams();
@@ -23,7 +24,7 @@ const DetailDoctor = () => {
 
   return (
     <>
-      <DetailDoctorHeader />
+      <SectionHeader />
       <div className="doctor-detail-container">
         <div className="intro-doctor">
           <div
@@ -58,7 +59,9 @@ const DetailDoctor = () => {
           <div className="content-left">
             <DoctorSchedule />
           </div>
-          <div className="content-right"></div>
+          <div className="content-right">
+            <DoctorExtraInfor language={language} detailDoctor={detailDoctor} />
+          </div>
         </div>
         <div className="detail-info-doctor">
           {detailDoctor &&

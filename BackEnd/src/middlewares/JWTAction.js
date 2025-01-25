@@ -1,5 +1,6 @@
 require("dotenv").config();
 import jwt from "jsonwebtoken";
+import { jwtDecode } from "jwt-decode";
 
 const nonSecurePaths = [
   "/api/login",
@@ -9,13 +10,16 @@ const nonSecurePaths = [
   "/api/get-schedule-doctor-by-date",
   "/api/delete-past-schedule-doctor",
   "/api/get-past-doctor-schedule",
+  "/api/get-profile-doctor-by-id",
 ];
 
 const createJWT = (payload) => {
   let key = process.env.JWT_SECRET;
   let token = null;
   try {
-    token = jwt.sign(payload, key);
+    token = jwt.sign(payload, key, {
+      expiresIn: "24h",
+    });
   } catch (e) {
     console.log(e);
   }
@@ -48,7 +52,7 @@ const checkUserJWT = (req, res, next) => {
   let cookie = req.cookies;
   let tokenFromHeader = extractToken(req);
   if ((cookie && cookie.jwt) || tokenFromHeader) {
-    let token = cookie && cookie.jwt ? cookie.jwt : tokenFromHeader;
+    let token = cookie.jwt ? cookie.jwt : tokenFromHeader;
     let decoded = verifyToken(token);
     if (decoded) {
       req.data = decoded;
@@ -70,8 +74,8 @@ const checkUserJWT = (req, res, next) => {
 const checkUserPermisson = (req, res, next) => {
   if (nonSecurePaths.includes(req.path)) return next();
   if (req.data) {
-    let email = req.data.user.email;
-    let permissions = req.data.user.roleData.permissionData;
+    let tokenFromHeader = extractToken(req);
+    let permissions = jwtDecode(tokenFromHeader).user.roleData.permissionData;
     let currentUrl = req.path;
     if (!permissions || permissions.length === 0) {
       res.status(403).json({

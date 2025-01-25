@@ -8,6 +8,7 @@ import {
   getScheduleByDateService,
   deletePastScheduleDoctorService,
   getPastDoctorScheduleService,
+  getProfileDoctorByIdService,
 } from "../services/doctorService";
 
 const getTopDoctorHome = async (req, res) => {
@@ -132,6 +133,19 @@ const getPastDoctorSchedule = async (req, res) => {
   }
 };
 
+const getProfileDoctorById = async (req, res) => {
+  try {
+    let response = await getProfileDoctorByIdService(req.query.id);
+    res.status(200).json(response);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      errCode: -3,
+      errMessage: "Error from Server!",
+    });
+  }
+};
+
 export {
   getTopDoctorHome,
   getAllDoctors,
@@ -142,4 +156,5 @@ export {
   getScheduleByDate,
   deletePastScheduleDoctor,
   getPastDoctorSchedule,
+  getProfileDoctorById,
 };

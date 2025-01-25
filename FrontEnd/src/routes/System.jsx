@@ -17,7 +17,7 @@ const System = () => {
       {isLoggedIn && <Header />}
       <div className="system-container">
         <div className="system-list">
-          {userInfo?.roleData.roleId === USER_ROLE.ADMIN && (
+          {userInfo?.roleId === USER_ROLE.ADMIN && (
             <Switch>
               <Route path="/system/user-manage" component={UserManage} />
               <Route path="/system/user-redux" component={UserRedux} />
@@ -29,7 +29,7 @@ const System = () => {
               />
             </Switch>
           )}
-          {userInfo?.roleData.roleId === USER_ROLE.DOCTOR && (
+          {userInfo?.roleId === USER_ROLE.DOCTOR && (
             <Switch>
               <Route
                 component={() => {

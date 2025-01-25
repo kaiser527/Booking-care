@@ -24,7 +24,6 @@ export const processLogout = () => {
       const res = await handleLogout();
       if (res && res.errCode === 0) {
         dispatch(processLogoutSuccess());
-        localStorage.removeItem("jwt");
       } else {
         dispatch(userLoginFail());
       }

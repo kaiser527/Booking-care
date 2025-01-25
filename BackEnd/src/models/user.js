@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         as: "roleData",
       });
       User.hasOne(models.Markdown, { foreignKey: "doctorId" });
+      User.hasOne(models.Doctor_infor, {
+        foreignKey: "doctorId",
+        as: "infoData",
+      });
     }
   }
   User.init(

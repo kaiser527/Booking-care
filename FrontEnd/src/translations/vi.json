@@ -20,7 +20,8 @@
     "child3": "Khám tổng quá",
     "child4": "Xét nghiệm y học",
     "child5": "Sức khỏe tinh thần",
-    "child6": "Khám nha khoa"
+    "child6": "Khám nha khoa",
+    "child7": "Tìm chuyên khoa khám bệnh"
   },
 
   "auth": {
@@ -28,7 +29,9 @@
       "login": "Đăng nhập",
       "password": "Mật khẩu",
       "forgot": "Quên mật khẩu ?",
-      "or-login-with": "Hoặc đăng nhập với"
+      "or-login-with": "Hoặc đăng nhập với",
+      "placeholder-email": "Nhập email của bạn",
+      "placeholder-password": "Nhập mật khẩu của bạn"
     }
   },
 
@@ -111,6 +114,13 @@
       "header": {
         "support": "Hỗ trợ"
       }
+    },
+    "extra-infor-doctor": {
+      "text-address": "Địa chỉ phòng khám",
+      "price": "Giá khám",
+      "show": "Xem chi tiết",
+      "hide": "Ẩn bảng giá",
+      "payment": "Người bệnh có thể thanh toán bằng chi phí bằng hình thức:"
     }
   }
 }

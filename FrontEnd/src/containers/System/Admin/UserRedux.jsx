@@ -23,9 +23,6 @@ const UserRedux = () => {
   const [position, setPosition] = useState("");
   const [role, setRole] = useState("");
   const [avatar, setAvatar] = useState("");
-  const [listGender, setListGender] = useState([]);
-  const [listRole, setListRole] = useState([]);
-  const [listPosition, setListPosition] = useState([]);
   const [action, setAction] = useState("");
   const [userEditId, setUserEditId] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,30 +42,6 @@ const UserRedux = () => {
   }, []);
 
   useEffect(() => {
-    let arrGenders = genders;
-    setListGender(arrGenders);
-    setGender(arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : "");
-  }, [genders]);
-
-  useEffect(() => {
-    let arrRoles = roles;
-    setListRole(arrRoles);
-    setRole(arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : "");
-  }, [roles]);
-
-  useEffect(() => {
-    let arrPositions = positions;
-    setListPosition(arrPositions);
-    setPosition(
-      arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : ""
-    );
-  }, [positions]);
-
-  useEffect(() => {
-    let arrGenders = genders;
-    let arrRoles = roles;
-    let arrPositions = positions;
-
     setEmail("");
     setPassword("");
     setFullName("");
@@ -76,11 +49,9 @@ const UserRedux = () => {
     setAddress("");
     setAvatar("");
     setPreviewImageURL("");
-    setGender(arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : "");
-    setRole(arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : "");
-    setPosition(
-      arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : ""
-    );
+    setGender(genders && genders.length > 0 ? genders[0].keyMap : "");
+    setRole(roles && roles.length > 0 ? roles[0].keyMap : "");
+    setPosition(positions && positions.length > 0 ? positions[0].keyMap : "");
     setAction(CRUD_ACTION.CREATE);
   }, [users]);
 
@@ -109,8 +80,27 @@ const UserRedux = () => {
     }
   };
 
+  const checkValidInput = (inputState) => {
+    let isValid = true;
+    let arrInput = ["email", "password", "fullName", "address", "phoneNumber"];
+    for (let i = 0; i < arrInput.length; i++) {
+      if (!inputState[arrInput[i]]) {
+        isValid = false;
+        break;
+      }
+    }
+    return isValid;
+  };
+
   const handleSaveUser = () => {
-    if (!email || !password || !fullName || !address || !phoneNumber) {
+    let inputState = {
+      email: email,
+      password: password,
+      fullName: fullName,
+      address: address,
+      phoneNumber: phoneNumber,
+    };
+    if (checkValidInput(inputState) === false) {
       toast.error("Missing required paramenters!");
       return;
     }
@@ -251,9 +241,9 @@ const UserRedux = () => {
                 onChange={(event) => setGender(event.target.value)}
                 value={gender}
               >
-                {listGender &&
-                  listGender.length > 0 &&
-                  listGender.map((gender, index) => {
+                {genders &&
+                  genders.length > 0 &&
+                  genders.map((gender, index) => {
                     return (
                       <option key={index} value={gender.keyMap}>
                         {language === LANGUAGES.VI
@@ -273,9 +263,9 @@ const UserRedux = () => {
                 onChange={(event) => setPosition(event.target.value)}
                 value={position}
               >
-                {listPosition &&
-                  listPosition.length > 0 &&
-                  listPosition.map((position, index) => {
+                {positions &&
+                  positions.length > 0 &&
+                  positions.map((position, index) => {
                     return (
                       <option key={index} value={position.keyMap}>
                         {language === LANGUAGES.VI
@@ -295,9 +285,9 @@ const UserRedux = () => {
                 onChange={(event) => setRole(event.target.value)}
                 value={role}
               >
-                {listRole &&
-                  listRole.length > 0 &&
-                  listRole.map((role, index) => {
+                {roles &&
+                  roles.length > 0 &&
+                  roles.map((role, index) => {
                     return (
                       <option key={index} value={role.keyMap}>
                         {language === LANGUAGES.VI

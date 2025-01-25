@@ -57,15 +57,33 @@ const getAllDoctorsService = () => {
   });
 };
 
+const checkInput = (data) => {
+  let isValid = true;
+  let arrInput = [
+    "doctorId",
+    "contentHTML",
+    "contentMarkdown",
+    "action",
+    "selectedPrice",
+    "selectedPayment",
+    "selectedProvince",
+    "clinicName",
+    "clinicAddress",
+    "note",
+  ];
+  for (let i = 0; i < arrInput.length; i++) {
+    if (!data[arrInput[i]]) {
+      isValid = false;
+      break;
+    }
+  }
+  return isValid;
+};
+
 const saveDetailInfoDoctor = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (
-        !data.doctorId ||
-        !data.contentHTML ||
-        !data.contentMarkdown ||
-        !data.action
-      )
+      if (checkInput(data) === false)
         resolve({
           errCode: 1,
           errMessage: "Missing required paramenter!",
@@ -91,6 +109,30 @@ const saveDetailInfoDoctor = (data) => {
             await doctorMarkdown.save();
           }
         }
+        let doctorInfo = await db.Doctor_infor.findOne({
+          where: { doctorId: data.doctorId },
+          raw: false,
+        });
+        if (doctorInfo) {
+          doctorInfo.priceId = data.selectedPrice;
+          doctorInfo.provinceId = data.selectedProvince;
+          doctorInfo.paymentId = data.selectedPayment;
+          doctorInfo.nameClinic = data.clinicName;
+          doctorInfo.addressClinic = data.clinicAddress;
+          doctorInfo.note = data.note;
+
+          await doctorInfo.save();
+        } else {
+          await db.Doctor_infor.create({
+            doctorId: data.doctorId,
+            priceId: data.selectedPrice,
+            provinceId: data.selectedProvince,
+            paymentId: data.selectedPayment,
+            nameClinic: data.clinicName,
+            addressClinic: data.clinicAddress,
+            note: data.note,
+          });
+        }
         resolve({
           errCode: 0,
           message: "Save doctor info succeed!",
@@ -114,9 +156,7 @@ const getDetailDoctorByIdService = (id) => {
       else {
         let data = await db.User.findOne({
           where: { id: id, roleId: "R2" },
-          attributes: {
-            exclude: ["password"],
-          },
+          attributes: ["image", "fullName"],
           include: [
             {
               model: db.Markdown,
@@ -126,6 +166,30 @@ const getDetailDoctorByIdService = (id) => {
               model: db.Allcode,
               as: "positionData",
               attributes: ["valueEn", "valueVi"],
+            },
+            {
+              model: db.Doctor_infor,
+              as: "infoData",
+              attributes: {
+                exclude: ["id", "createdAt", "updatedAt", "doctorId"],
+              },
+              include: [
+                {
+                  model: db.Allcode,
+                  as: "priceData",
+                  attributes: ["valueEn", "valueVi"],
+                },
+                {
+                  model: db.Allcode,
+                  as: "paymentData",
+                  attributes: ["valueEn", "valueVi"],
+                },
+                {
+                  model: db.Allcode,
+                  as: "provinceData",
+                  attributes: ["valueEn", "valueVi"],
+                },
+              ],
             },
           ],
           raw: false,
@@ -158,9 +222,24 @@ const getDoctorMarkdownById = (doctorId) => {
         let results = await db.Markdown.findOne({
           where: { doctorId: doctorId },
           attributes: {
-            exclude: ["specialtyId", "clinicId"],
+            exclude: ["specialtyId", "clinicId", "createdAt", "updatedAt"],
           },
+          include: [
+            {
+              model: db.Doctor_infor,
+              as: "infoDataMarkdown",
+              attributes: [
+                "priceId",
+                "provinceId",
+                "paymentId",
+                "note",
+                "addressClinic",
+                "nameClinic",
+              ],
+            },
+          ],
         });
+        if (!results) results = {};
         resolve({
           errCode: 0,
           data: results,
@@ -319,6 +398,75 @@ const getPastDoctorScheduleService = () => {
   });
 };
 
+const getProfileDoctorByIdService = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!id) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required paramenter!",
+        });
+      } else {
+        let results = await db.User.findOne({
+          where: { id: id, roleId: "R2" },
+          attributes: {
+            exclude: ["password", "id", "createdAt", "updatedAt"],
+          },
+          include: [
+            {
+              model: db.Allcode,
+              as: "positionData",
+              attributes: ["valueEn", "valueVi"],
+            },
+            {
+              model: db.Markdown,
+              attributes: ["description"],
+            },
+            {
+              model: db.Doctor_infor,
+              as: "infoData",
+              attributes: {
+                exclude: ["id", "createdAt", "updatedAt", "doctorId"],
+              },
+              include: [
+                {
+                  model: db.Allcode,
+                  as: "priceData",
+                  attributes: ["valueEn", "valueVi"],
+                },
+                {
+                  model: db.Allcode,
+                  as: "paymentData",
+                  attributes: ["valueEn", "valueVi"],
+                },
+                {
+                  model: db.Allcode,
+                  as: "provinceData",
+                  attributes: ["valueEn", "valueVi"],
+                },
+              ],
+            },
+          ],
+          raw: false,
+          nest: true,
+        });
+        if (results && results.image) {
+          results.image = new Buffer(results.image, "base64").toString(
+            "binary"
+          );
+        }
+        if (!results) results = {};
+        resolve({
+          errCode: 0,
+          data: results,
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 export {
   getTopDoctorHomeService,
   getAllDoctorsService,
@@ -329,4 +477,5 @@ export {
   getScheduleByDateService,
   deletePastScheduleDoctorService,
   getPastDoctorScheduleService,
+  getProfileDoctorByIdService,
 };

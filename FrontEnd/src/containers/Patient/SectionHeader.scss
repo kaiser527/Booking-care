@@ -1,12 +1,12 @@
-.detail-doctor-header-container {
+.section-header-container {
   height: 62px;
   width: 100%;
   padding: 0 100px;
   position: sticky;
   top: 0;
   background-color: #45c3d2;
-  z-index: 10000;
-  .detail-doctor-header-content {
+  z-index: 1;
+  .section-header-content {
     width: 100%;
     height: 100%;
     display: flex;

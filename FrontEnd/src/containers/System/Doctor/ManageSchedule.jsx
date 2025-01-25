@@ -16,6 +16,7 @@ const ManageSchedule = (props) => {
   const [listDoctor, setListDoctor] = useState([]);
   const [currentDate, setCurrentDate] = useState("");
   const [rangeTime, setRangeTime] = useState([]);
+  const [isSelected, setIsSelected] = useState(false);
 
   const scheduleTimes = useSelector((state) => state.doctor.scheduleTimes);
   const doctors = useSelector((state) => state.doctor.alldoctors);
@@ -25,7 +26,7 @@ const ManageSchedule = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (userInfo?.roleData.roleId === USER_ROLE.ADMIN) {
+    if (userInfo?.roleId === USER_ROLE.ADMIN) {
       dispatch(actions.fetchAllDoctor());
     }
     dispatch(actions.fetchAllScheduleTimesRedux());
@@ -34,15 +35,12 @@ const ManageSchedule = (props) => {
   useEffect(() => {
     let dataSelect = buildInputSelect(doctors);
     setListDoctor(dataSelect);
-  }, [doctors]);
-
-  useEffect(() => {
     if (scheduleTimes && scheduleTimes.length > 0) {
       scheduleTimes.map((time) => {
         time.isSelected = false;
       });
+      setRangeTime(scheduleTimes);
     }
-    setRangeTime(scheduleTimes);
   }, [scheduleTimes]);
 
   const buildInputSelect = (data) => {
@@ -59,6 +57,7 @@ const ManageSchedule = (props) => {
   };
 
   const handleChange = (selectedDoctor) => {
+    setIsSelected(true);
     setSelectedDoctor(selectedDoctor);
   };
 
@@ -80,12 +79,12 @@ const ManageSchedule = (props) => {
   const handleSaveSchedule = () => {
     let formattedDate = new Date(currentDate).getTime();
     let result = [];
-    let check = userInfo?.roleData.roleId === USER_ROLE.DOCTOR;
+    let check = userInfo?.roleId === USER_ROLE.DOCTOR;
     if (!currentDate) {
       toast.error("Invalid date");
       return;
     }
-    if (userInfo?.roleData.roleId === USER_ROLE.ADMIN) {
+    if (userInfo?.roleId === USER_ROLE.ADMIN) {
       if (selectedDoctor && _.isEmpty(selectedDoctor)) {
         toast.error("Invalid doctor");
         return;
@@ -122,13 +121,13 @@ const ManageSchedule = (props) => {
       </div>
       <div className="container">
         <div className="row">
-          {userInfo?.roleData.roleId === USER_ROLE.ADMIN && (
+          {userInfo?.roleId === USER_ROLE.ADMIN && (
             <div className="col-6 form-group">
               <label>
                 <FormattedMessage id="manage-schedule.choose-doctor" />
               </label>
               <Select
-                defaultValue={selectedDoctor[0]}
+                defaultValue={isSelected ? selectedDoctor : ""}
                 onChange={handleChange}
                 options={listDoctor}
                 placeholder={props.intl.formatMessage({

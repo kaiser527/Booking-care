@@ -26,7 +26,7 @@ const Header = () => {
   useEffect(() => {
     let menu = [];
     if (userInfo && !_.isEmpty(userInfo)) {
-      let role = userInfo?.roleData.roleId;
+      let role = userInfo?.roleId;
       if (role === USER_ROLE.ADMIN) {
         menu = adminMenu;
       }

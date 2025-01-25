@@ -2,12 +2,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import "./HomeHeader.scss";
 import logo from "../../assets/logo.svg";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, injectIntl } from "react-intl";
 import { LANGUAGES } from "../../utils";
 import * as actions from "../../store/actions";
 import { useDispatch } from "react-redux";
 
-const HomeHeader = () => {
+const HomeHeader = (props) => {
   const dispatch = useDispatch();
 
   const language = useSelector((state) => state.app.language);
@@ -103,7 +103,12 @@ const HomeHeader = () => {
           </div>
           <div className="search">
             <i className="fas fa-search"></i>
-            <input type="text" placeholder="Tìm chuyên khoa khám bệnh" />
+            <input
+              type="text"
+              placeholder={props.intl.formatMessage({
+                id: "banner.child7",
+              })}
+            />
           </div>
         </div>
         <div className="content-down">
@@ -163,4 +168,4 @@ const HomeHeader = () => {
   );
 };
 
-export default HomeHeader;
+export default injectIntl(HomeHeader);

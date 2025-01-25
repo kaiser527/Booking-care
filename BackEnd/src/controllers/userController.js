@@ -24,17 +24,16 @@ const handleLogin = async (req, res) => {
   //compare password
   //return user's info
   //access_token:JWT json web token
-  if (userData && userData.access_token) {
-    res.cookie("jwt", userData.access_token, {
+  if (userData && userData.user && userData.user.access_token) {
+    res.cookie("jwt", userData.user.access_token, {
       httpOnly: true,
-      maxAge: 60 * 60 * 1000,
+      maxAge: 30 * 60 * 1000,
     });
   }
   return res.status(200).json({
     //trong hop neu email kh ton tai hoac password kh dung(login fail) thi tra nhung errCode hay message tuong ung
     errCode: userData.errCode,
     message: userData.errMessage,
-    access_token: userData.access_token,
     user: userData.user ? userData.user : {},
   }); //neu kh co loi thi tra ve ma 200 con co loi se tra ve ma 500,404,...
 };
