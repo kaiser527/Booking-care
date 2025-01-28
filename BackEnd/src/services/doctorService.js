@@ -315,6 +315,11 @@ const getScheduleByDateService = (doctorId, date) => {
               as: "scheduleData",
               attributes: ["valueVi", "valueEn"],
             },
+            {
+              model: db.User,
+              as: "scheduleUserData",
+              attributes: ["fullName"],
+            },
           ],
           raw: true,
           nest: true,

@@ -18,6 +18,7 @@ import { getPastDoctorScheduleAPI } from "../services/doctorService";
 import { useDispatch } from "react-redux";
 import { history } from "../redux";
 import * as actions from "../store/actions";
+import VerifyEmail from "./Patient/VerifyEmail";
 
 const App = (props) => {
   const { persistor } = props;
@@ -42,6 +43,9 @@ const App = (props) => {
   useEffect(() => {
     handlePersistorState();
     getPastDoctorSchedule();
+    return () => {
+      setPastScheduleArr([]);
+    };
   }, []);
 
   useEffect(() => {
@@ -80,6 +84,10 @@ const App = (props) => {
                 />
                 <Route path={path.HOMEPAGE} component={HomePage} />
                 <Route path={path.DETAIL_DOCTOR} component={DetailDoctor} />
+                <Route
+                  path={path.VERIFY_EMAIL_BOOKING}
+                  component={VerifyEmail}
+                />
               </Switch>
             </CustomScrollbars>
           </div>

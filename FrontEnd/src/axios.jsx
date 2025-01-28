@@ -35,27 +35,6 @@ instance.interceptors.response.use(
         return Promise.reject(error.message);
       }
 
-      // bad request
-      case 400: {
-        return Promise.reject(error.message);
-      }
-
-      // not found
-      case 404: {
-        return Promise.reject(error.message);
-      }
-
-      // conflict
-      case 409: {
-        return Promise.reject(error.message);
-      }
-
-      // unprocessable
-      case 422: {
-        return Promise.reject(error.message);
-      }
-
-      // generic api error (server related) unexpected
       default: {
         return Promise.reject(error.message);
       }

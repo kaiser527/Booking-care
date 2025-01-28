@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./ManageDoctor.scss";
 import { useSelector } from "react-redux";
 import * as actions from "../../../store/actions";
@@ -37,12 +37,13 @@ const ManageDoctor = (props) => {
   const infoData = useSelector((state) => state.admin.infoData);
   const language = useSelector((state) => state.app.language);
 
-  useEffect(() => {
+  const getAllData = useCallback(() => {
     dispatch(actions.fetchAllDoctor());
-  }, []);
+    dispatch(actions.fetchRequiredDoctorInfo());
+  }, [doctors, infoData]);
 
   useEffect(() => {
-    dispatch(actions.fetchRequiredDoctorInfo());
+    getAllData();
   }, [language]);
 
   useEffect(() => {
@@ -72,7 +73,7 @@ const ManageDoctor = (props) => {
         ? dataSelectPayment
         : []
     );
-  }, [infoData]);
+  }, [getAllData]);
 
   useEffect(() => {
     if (doctorMarkdown) {

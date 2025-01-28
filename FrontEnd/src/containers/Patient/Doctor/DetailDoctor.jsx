@@ -33,7 +33,6 @@ const DetailDoctor = () => {
               backgroundImage: `url(${
                 detailDoctor && detailDoctor.image ? detailDoctor.image : ""
               })`,
-              backgroundSize: "150px 135px",
             }}
           ></div>
           <div className="content-right">

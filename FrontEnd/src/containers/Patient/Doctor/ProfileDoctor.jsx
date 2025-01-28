@@ -5,8 +5,14 @@ import * as actions from "../../../store/actions";
 import { useParams } from "react-router-dom";
 import { LANGUAGES } from "../../../utils";
 import NumberFormat from "react-number-format";
+import _ from "lodash";
+import moment from "moment";
+import { FormattedMessage } from "react-intl";
+import localization from "moment/locale/vi";
 
-const ProfileDoctor = () => {
+const ProfileDoctor = (props) => {
+  const { isShowDescDoctor, dataScheduleTimeModal } = props;
+
   const profileDoctor = useSelector((state) => state.doctor.profileDoctor);
   const language = useSelector((state) => state.app.language);
 
@@ -18,6 +24,34 @@ const ProfileDoctor = () => {
     dispatch(actions.getProfileDoctorRedux(params.id));
   }, []);
 
+  const capitalizeFirstLetter = (val) => {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+  };
+
+  const renderTimeBooking = (dataTime) => {
+    if (dataTime && !_.isEmpty(dataTime)) {
+      let date =
+        language === LANGUAGES.VI
+          ? capitalizeFirstLetter(
+              moment(dataTime.date).format("dddd - DD/MM/YYYY")
+            )
+          : moment(dataTime.date).locale("en").format("ddd - MM/DD/YYYY");
+      return (
+        <>
+          <div>
+            {language === LANGUAGES.VI
+              ? dataTime.scheduleData.valueVi
+              : dataTime.scheduleData.valueEn}{" "}
+            - {date}
+          </div>
+          <div>
+            <FormattedMessage id="patient.booking-modal.free-booking" />
+          </div>
+        </>
+      );
+    }
+  };
+
   return (
     <div className="profile-doctor-container">
       <div className="intro-doctor">
@@ -27,7 +61,6 @@ const ProfileDoctor = () => {
             backgroundImage: `url(${
               profileDoctor && profileDoctor.image ? profileDoctor.image : ""
             })`,
-            backgroundSize: "130px 115px",
           }}
         ></div>
         <div className="content-right">
@@ -41,16 +74,22 @@ const ProfileDoctor = () => {
             )}
           </div>
           <div className="down">
-            {profileDoctor &&
-              profileDoctor.Markdown &&
-              profileDoctor.Markdown.description && (
-                <span>{profileDoctor.Markdown.description}</span>
-              )}
+            {isShowDescDoctor ? (
+              <>
+                {profileDoctor &&
+                  profileDoctor.Markdown &&
+                  profileDoctor.Markdown.description && (
+                    <span>{profileDoctor.Markdown.description}</span>
+                  )}
+              </>
+            ) : (
+              <>{renderTimeBooking(dataScheduleTimeModal)}</>
+            )}
           </div>
         </div>
       </div>
       <div className="price">
-        Giá khám:{" "}
+        <FormattedMessage id="patient.booking-modal.price" />:{" "}
         {profileDoctor &&
           profileDoctor.infoData &&
           profileDoctor.infoData.priceData && (

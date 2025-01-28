@@ -5,7 +5,9 @@
     margin: 10px 150px;
     .content-left {
       width: 120px;
-      background: center center no-repeat;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
       height: 120px;
       border-radius: 50%;
       margin: 10px 20px;

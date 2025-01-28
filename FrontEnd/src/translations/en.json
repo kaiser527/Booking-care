@@ -121,6 +121,22 @@
       "show": "Show detail",
       "hide": "Hide dedail",
       "payment": "Patient can pay with:"
+    },
+    "booking-modal": {
+      "price": "Exam price",
+      "title": "Booking appointment information",
+      "full-name": "Full name",
+      "phone-number": "Phone number",
+      "email": "Email address",
+      "contact": "Contact address",
+      "reason": "Exam reason",
+      "date": "Booking date",
+      "gender": "Gender",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "alert": "Missing information",
+      "free-booking": "Booking for free",
+      "alert-login": "Pleas login before booking"
     }
   }
 }

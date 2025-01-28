@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./TableManageUser.scss";
 import { useSelector } from "react-redux";
 import * as actions from "../../../store/actions";
@@ -6,6 +6,7 @@ import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { deleteUserService, getNullUsers } from "../../../services/userService";
+import _ from "lodash";
 
 const TableManageUser = (props) => {
   const currentLimit = 4;
@@ -19,7 +20,7 @@ const TableManageUser = (props) => {
 
   const data = useSelector((state) => state.admin.users);
 
-  const nullUser = nullData?.find((user) => user.email === null);
+  const nullUser = useRef({});
 
   useEffect(() => {
     dispatch(actions.fetchAllUserRedux(currentPage, currentLimit));
@@ -27,12 +28,20 @@ const TableManageUser = (props) => {
 
   useEffect(() => {
     getUndefineUser();
+    return () => {
+      setNullData([]);
+    };
   }, []);
 
   useEffect(() => {
-    if (nullUser) {
-      deleteNullUser(nullUser.id);
+    let deleteData = nullData?.find((item) => item.email === null);
+    nullUser.current = deleteData;
+    if (nullUser && nullUser.current && deleteData) {
+      deleteNullUser(nullUser.current.id);
     }
+    return () => {
+      nullUser.current = {};
+    };
   }, [nullData]);
 
   useEffect(() => {
@@ -46,7 +55,7 @@ const TableManageUser = (props) => {
 
   const deleteNullUser = async (id) => {
     await deleteUserService(id);
-    getUndefineUser();
+    await getUndefineUser();
   };
 
   const handleDeleteUser = (user) => {

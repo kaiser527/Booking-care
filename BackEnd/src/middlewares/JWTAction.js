@@ -11,6 +11,8 @@ const nonSecurePaths = [
   "/api/delete-past-schedule-doctor",
   "/api/get-past-doctor-schedule",
   "/api/get-profile-doctor-by-id",
+  "/api/get-gender-patient",
+  "/api/verify-book-appointment",
 ];
 
 const createJWT = (payload) => {

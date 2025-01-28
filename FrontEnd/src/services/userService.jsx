@@ -32,6 +32,18 @@ const handleLogout = () => {
   return axios.post("api/logout");
 };
 
+const getGenderPatient = () => {
+  return axios.get("api/get-gender-patient");
+};
+
+const postPatientBookingAppointment = (data) => {
+  return axios.post("api/patient-book-appointment", data);
+};
+
+const postVerifyBookingAppointment = (data) => {
+  return axios.post("api/verify-book-appointment", data);
+};
+
 export {
   handleLoginApi,
   getAllUsers,
@@ -41,4 +53,7 @@ export {
   getAllCodeService,
   handleLogout,
   getNullUsers,
+  getGenderPatient,
+  postPatientBookingAppointment,
+  postVerifyBookingAppointment,
 };

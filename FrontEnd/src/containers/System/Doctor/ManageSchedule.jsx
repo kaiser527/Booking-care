@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FormattedMessage, injectIntl } from "react-intl";
 import * as actions from "../../../store/actions";
@@ -25,11 +25,15 @@ const ManageSchedule = (props) => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  const getAllScheduleTimeAndDoctor = useCallback(() => {
     if (userInfo?.roleId === USER_ROLE.ADMIN) {
       dispatch(actions.fetchAllDoctor());
     }
     dispatch(actions.fetchAllScheduleTimesRedux());
+  }, [scheduleTimes, doctors]);
+
+  useEffect(() => {
+    getAllScheduleTimeAndDoctor();
   }, []);
 
   useEffect(() => {
@@ -41,7 +45,7 @@ const ManageSchedule = (props) => {
       });
       setRangeTime(scheduleTimes);
     }
-  }, [scheduleTimes]);
+  }, [getAllScheduleTimeAndDoctor]);
 
   const buildInputSelect = (data) => {
     let result = [];
