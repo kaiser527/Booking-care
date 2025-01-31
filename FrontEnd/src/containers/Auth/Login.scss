@@ -25,6 +25,13 @@
         font-size: 24px;
         padding-top: 10px;
       }
+      .forgot-password {
+        cursor: pointer;
+        &:hover {
+          color: rgb(0, 162, 255);
+          transform: all 0.3s;
+        }
+      }
       .password-input {
         .password-group {
           position: relative;

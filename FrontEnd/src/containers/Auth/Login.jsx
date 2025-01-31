@@ -4,6 +4,7 @@ import "./Login.scss";
 import { handleLoginApi } from "../../services/userService";
 import { useDispatch } from "react-redux";
 import { FormattedMessage, injectIntl } from "react-intl";
+import { useHistory } from "react-router-dom";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -12,6 +13,8 @@ const Login = (props) => {
   const [errMessage, setErrMessage] = useState("");
 
   const dispatch = useDispatch();
+
+  const history = useHistory();
 
   const handleLogin = async () => {
     setErrMessage("");
@@ -36,6 +39,10 @@ const Login = (props) => {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter" || event.ketCode === 13) handleLogin();
+  };
+
+  const handleClickForgotPassword = () => {
+    history.push("/forgot-password");
   };
 
   return (
@@ -89,8 +96,11 @@ const Login = (props) => {
               <FormattedMessage id="auth.login.login" />
             </button>
           </div>
-          <div className="col-12">
-            <span className="forgot-password">
+          <div className="col-12 forgot-password">
+            <span
+              className="forgot-password"
+              onClick={() => handleClickForgotPassword()}
+            >
               <FormattedMessage id="auth.login.forgot" />
             </span>
           </div>

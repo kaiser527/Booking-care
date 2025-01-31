@@ -2,6 +2,8 @@ require("dotenv").config();
 import bcrypt from "bcryptjs";
 import db from "../models/index";
 import { createJWT } from "../middlewares/JWTAction";
+import { v4 as uuidv4 } from "uuid";
+import { emailResetPassword } from "./emailService";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -294,6 +296,128 @@ const getAllCodeService = (typeInput) => {
   });
 };
 
+const buildUrlEmail = (email, token) => {
+  let result = `${process.env.URL_REACT}/verify-reset-password?token=${token}&email=${email}`;
+  return result;
+};
+
+const postForgotPasswordService = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.email) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required Parameters !",
+        });
+      } else {
+        let user = await db.User.findOne({
+          where: { email: data.email },
+          attributes: [
+            "email",
+            "fullName",
+            "address",
+            "phoneNumber",
+            "password",
+          ],
+          raw: true,
+        });
+        if (user && user.password) {
+          let token = uuidv4();
+          await emailResetPassword({
+            email: user.email,
+            fullName: user.fullName,
+            address: user.address,
+            phoneNumber: user.phoneNumber,
+            language: data.language,
+            redirectLink: buildUrlEmail(data.email, token),
+          });
+          let isExist = await db.ForgotPassword.findOne({
+            where: { email: data.email, status: "NEW" },
+            attributes: ["token", "id"],
+          });
+          if (isExist) {
+            isExist.token = token;
+            await isExist.save();
+          }
+          await db.ForgotPassword.findOrCreate({
+            where: { status: "NEW", email: user.email },
+            defaults: {
+              email: user.email,
+              status: "NEW",
+              token: token,
+              oldPassword: user.password,
+              currentPassword: user.password,
+            },
+          });
+
+          resolve({
+            errCode: 0,
+            message: "OK",
+          });
+        } else {
+          resolve({
+            errCode: 2,
+            errMessage: `Email is not exist`,
+          });
+        }
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const postResetPasswordService = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.newPassword || !data.token || !data.email) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required Parameters !",
+        });
+      } else {
+        let user = await db.User.findOne({
+          where: { email: data.email },
+          attributes: ["password", "id"],
+          include: [
+            {
+              model: db.ForgotPassword,
+              as: "forgotPasswordData",
+              where: { status: "NEW", token: data.token },
+              attributes: {
+                exclude: ["createdAt", "updatedAt"],
+              },
+            },
+          ],
+          nest: true,
+        });
+        const hashPasswordFromBcrypt = await hashUserPassword(data.newPassword);
+        if (user) {
+          user.password = hashPasswordFromBcrypt;
+          user.forgotPasswordData.status = "CONFIRMED";
+          user.forgotPasswordData.currentPassword = hashPasswordFromBcrypt;
+
+          await user.save();
+          await user.forgotPasswordData.save();
+
+          resolve({
+            errCode: 0,
+            message: "Update the Password succeed!",
+          });
+        } else {
+          resolve({
+            errCode: 2,
+            errMessage:
+              "Password has been reseted, if you want to reset your password once more time please send another email!",
+          });
+        }
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 export {
   handleUserLogin,
   getAllUsers,
@@ -302,4 +426,6 @@ export {
   updateUserData,
   getAllCodeService,
   getUserWithPagination,
+  postForgotPasswordService,
+  postResetPasswordService,
 };

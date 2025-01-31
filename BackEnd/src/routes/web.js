@@ -19,6 +19,8 @@ import {
   handleDeleteUser,
   getAllCode,
   handleLogout,
+  postForgotPassword,
+  postResetPassword,
 } from "../controllers/userController";
 import {
   getTopDoctorHome,
@@ -58,6 +60,8 @@ router.get("/api/get-all-users", handleGetAllUsers);
 router.post("/api/create-new-user", handleCreateNewUser);
 router.put("/api/edit-user", handleEditUser);
 router.delete("/api/delete-user", handleDeleteUser);
+router.post("/api/forgot-password", postForgotPassword);
+router.post("/api/reset-user-password", postResetPassword);
 
 //api doctors
 router.get("/api/top-doctor-home", getTopDoctorHome);

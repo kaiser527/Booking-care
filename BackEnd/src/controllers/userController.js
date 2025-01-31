@@ -6,6 +6,8 @@ import {
   updateUserData,
   getAllCodeService,
   getUserWithPagination,
+  postForgotPasswordService,
+  postResetPasswordService,
 } from "../services/userService";
 
 //auth
@@ -138,7 +140,33 @@ const getAllCode = async (req, res) => {
     return res.status(500).json({
       errCode: -1,
       errMessage: "Error from server",
-    }); //khi kh ket noi toi db thi chay vao case nay
+    });
+  }
+};
+
+const postForgotPassword = async (req, res) => {
+  try {
+    let data = await postForgotPasswordService(req.body);
+    return res.status(200).json(data);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: "Error from server",
+    });
+  }
+};
+
+const postResetPassword = async (req, res) => {
+  try {
+    let data = await postResetPasswordService(req.body);
+    return res.status(200).json(data);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: "Error from server",
+    });
   }
 };
 
@@ -150,4 +178,6 @@ export {
   handleEditUser,
   getAllCode,
   handleLogout,
+  postForgotPassword,
+  postResetPassword,
 };

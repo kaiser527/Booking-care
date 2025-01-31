@@ -32,6 +32,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "doctorId",
         as: "scheduleUserData",
       });
+      User.belongsTo(models.ForgotPassword, {
+        foreignKey: "email",
+        targetKey: "email",
+        as: "forgotPasswordData",
+      });
     }
   }
   User.init(

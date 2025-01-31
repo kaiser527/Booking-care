@@ -32,6 +32,13 @@
       "or-login-with": "Or Login With",
       "placeholder-email": "Enter your email",
       "placeholder-password": "Enter your password"
+    },
+    "forgot-password": {
+      "title": "Forgot password ?",
+      "description": "You can reset your Password here",
+      "placeholder": "Email address",
+      "send-password": "Send password",
+      "return-login": "Return to login"
     }
   },
 

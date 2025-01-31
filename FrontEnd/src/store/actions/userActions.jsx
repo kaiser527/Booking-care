@@ -2,8 +2,9 @@ import actionTypes from "./actionTypes";
 import {
   getGenderPatient,
   handleLogout,
+  postForgotPasswordAPI,
   postPatientBookingAppointment,
-  postVerifyBookingAppointment,
+  postResetPasswordAPI,
 } from "../../services/userService";
 import { toast } from "react-toastify";
 
@@ -89,4 +90,56 @@ export const postBookingAppointmentSuccess = () => ({
 
 export const postBookingAppointmentFailed = () => ({
   type: actionTypes.BOOKING_PATIENT_APPOINTMENT_FAILED,
+});
+
+export const postForgotPasswordRedux = (data) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await postForgotPasswordAPI(data);
+      if (res && res.errCode === 0) {
+        dispatch(postForgotPasswordSuccess());
+        toast.success(res.message);
+      } else {
+        dispatch(postForgotPasswordFailed());
+        toast.error(res.errMessage);
+      }
+    } catch (e) {
+      dispatch(postForgotPasswordFailed());
+      console.log(e);
+    }
+  };
+};
+
+export const postForgotPasswordSuccess = () => ({
+  type: actionTypes.ACTION_CLICK_BTN_FORGOT_PASSWORD_SUCCESS,
+});
+
+export const postForgotPasswordFailed = () => ({
+  type: actionTypes.ACTION_CLICK_BTN_FORGOT_PASSWORD_FAILED,
+});
+
+export const verifyResetPasswordRedux = (data) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await postResetPasswordAPI(data);
+      if (res && res.errCode === 0) {
+        dispatch(verifyResetPasswordSuccess());
+        toast.success(res.message);
+      } else {
+        dispatch(verifyResetPasswordFailed());
+        toast.error(res.errMessage);
+      }
+    } catch (e) {
+      dispatch(verifyResetPasswordFailed());
+      console.log(e);
+    }
+  };
+};
+
+export const verifyResetPasswordSuccess = () => ({
+  type: actionTypes.VERIFY_RESET_PASSWORD_SUCCESS,
+});
+
+export const verifyResetPasswordFailed = () => ({
+  type: actionTypes.VERIFY_RESET_PASSWORD_FAILED,
 });

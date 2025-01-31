@@ -13,6 +13,8 @@ const nonSecurePaths = [
   "/api/get-profile-doctor-by-id",
   "/api/get-gender-patient",
   "/api/verify-book-appointment",
+  "/api/forgot-password",
+  "/api/reset-user-password",
 ];
 
 const createJWT = (payload) => {

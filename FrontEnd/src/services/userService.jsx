@@ -44,6 +44,14 @@ const postVerifyBookingAppointment = (data) => {
   return axios.post("api/verify-book-appointment", data);
 };
 
+const postForgotPasswordAPI = (data) => {
+  return axios.post("api/forgot-password", data);
+};
+
+const postResetPasswordAPI = (data) => {
+  return axios.post("api/reset-user-password", data);
+};
+
 export {
   handleLoginApi,
   getAllUsers,
@@ -56,4 +64,6 @@ export {
   getGenderPatient,
   postPatientBookingAppointment,
   postVerifyBookingAppointment,
+  postForgotPasswordAPI,
+  postResetPasswordAPI,
 };

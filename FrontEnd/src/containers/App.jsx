@@ -19,6 +19,8 @@ import { useDispatch } from "react-redux";
 import { history } from "../redux";
 import * as actions from "../store/actions";
 import VerifyEmail from "./Patient/VerifyEmail";
+import ForgotPassword from "./Auth/ForgotPassword";
+import ResetPassword from "./Auth/ResetPassword";
 
 const App = (props) => {
   const { persistor } = props;
@@ -88,6 +90,8 @@ const App = (props) => {
                   path={path.VERIFY_EMAIL_BOOKING}
                   component={VerifyEmail}
                 />
+                <Route path={path.FORGOT_PASSWORD} component={ForgotPassword} />
+                <Route path={path.RESER_PASSWORD} component={ResetPassword} />
               </Switch>
             </CustomScrollbars>
           </div>

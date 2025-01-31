@@ -32,6 +32,13 @@
       "or-login-with": "Hoặc đăng nhập với",
       "placeholder-email": "Nhập email của bạn",
       "placeholder-password": "Nhập mật khẩu của bạn"
+    },
+    "forgot-password": {
+      "title": "Quên mật khẩu ?",
+      "description": "Bạn có thể đổi mật khẩu tại đây",
+      "placeholder": "Địa chỉ email",
+      "send-password": "Gửi mật khẩu",
+      "return-login": "Trở về đăng nhập"
     }
   },
 
