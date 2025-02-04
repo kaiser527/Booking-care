@@ -40,6 +40,10 @@ import {
   getGenderPatient,
   postVerifyBookAppointment,
 } from "../controllers/patientController";
+import {
+  createNewSpecialty,
+  getAllSpecialty,
+} from "../controllers/specialtyController";
 
 //check user permission
 router.all("*", checkUserJWT, checkUserPermisson);
@@ -79,6 +83,10 @@ router.get("/api/get-profile-doctor-by-id", getProfileDoctorById);
 router.post("/api/patient-book-appointment", postBookAppointment);
 router.get("/api/get-gender-patient", getGenderPatient);
 router.post("/api/verify-book-appointment", postVerifyBookAppointment);
+
+//api specialty
+router.post("/api/create-new-specialty", createNewSpecialty);
+router.get("/api/get-all-specialties", getAllSpecialty);
 
 //api all code
 router.get("/api/allcode", getAllCode);

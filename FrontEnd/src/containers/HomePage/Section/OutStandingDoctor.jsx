@@ -12,7 +12,6 @@ const OutStandingDoctor = (props) => {
   const history = useHistory();
 
   const listTopDoctors = useSelector((state) => state.doctor.topdoctors);
-
   const language = useSelector((state) => state.app.language);
 
   useEffect(() => {
@@ -36,12 +35,6 @@ const OutStandingDoctor = (props) => {
               {listTopDoctors &&
                 listTopDoctors.length > 0 &&
                 listTopDoctors.map((doctor, index) => {
-                  let imageBase64 = "";
-                  if (doctor.image) {
-                    imageBase64 = new Buffer(doctor.image, "base64").toString(
-                      "binary"
-                    );
-                  }
                   let nameVi = `${doctor.positionData.valueVi}, ${doctor.fullName}`;
                   let nameEn = `${doctor.positionData.valueEn}, ${doctor.fullName}`;
                   return (
@@ -57,7 +50,7 @@ const OutStandingDoctor = (props) => {
                           <div
                             className="bg-image section-outstanding-doctor"
                             style={{
-                              backgroundImage: `url(${imageBase64})`,
+                              backgroundImage: `url(${doctor.image})`,
                             }}
                           ></div>
                         </div>

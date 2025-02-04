@@ -39,6 +39,18 @@
       "placeholder": "Email address",
       "send-password": "Send password",
       "return-login": "Return to login"
+    },
+    "reset-password": {
+      "title": "Reset your password",
+      "label-password": "Password",
+      "small-password": "Enter your new password here.",
+      "label-confirm-password": "Confirm password",
+      "small-confirm-password": "Confirm your new password.",
+      "error-message": "Password is not same",
+      "button": "Submit",
+      "placeholder-password": "Enter your new Password",
+      "placeholder-confirm-password": "Confirm your new Password",
+      "missing-password": "Please enter your new Password"
     }
   },
 
@@ -100,7 +112,8 @@
 
   "homepage": {
     "out-standing-doctor": "Outstanding doctor last week",
-    "more-info": "More info"
+    "more-info": "More info",
+    "popular-specialty": "Popular specialties"
   },
 
   "manage-schedule": {
@@ -109,6 +122,15 @@
     "choose-date": "Examination calendar",
     "save-info": "Save info",
     "placeholder": "Select date"
+  },
+
+  "manage-specialty": {
+    "title": "Manage specialty",
+    "specialty-name": "Specialty name",
+    "select-specialty": "Select specialty",
+    "image": "Specialty image",
+    "btn-save": "Save",
+    "btn-create": "Create"
   },
 
   "patient": {
@@ -144,6 +166,11 @@
       "alert": "Missing information",
       "free-booking": "Booking for free",
       "alert-login": "Pleas login before booking"
+    },
+    "verify-booking": {
+      "loading": "Loading data...",
+      "success": "Appointment confirmed successfully",
+      "error": "Appointment schedule does not exist or has been confirmed"
     }
   }
 }

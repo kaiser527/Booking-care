@@ -1,8 +1,8 @@
 import { useLocation } from "react-router-dom";
 import "./VerifyEmail.scss";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import HomeHeader from "../HomePage/HomeHeader";
+import { FormattedMessage } from "react-intl";
 import { postVerifyBookingAppointment } from "../../services/userService";
 
 const VerifyEmail = () => {
@@ -35,14 +35,18 @@ const VerifyEmail = () => {
       <HomeHeader />
       <div className="verify-email-container">
         {statusVerify === false ? (
-          <div>Loading data...</div>
+          <div>
+            <FormattedMessage id="patient.verify-booking.loading" />
+          </div>
         ) : (
           <div>
             {errCode === 0 ? (
-              <div className="infor-booking">Xác nhận lịch hẹn thành công</div>
+              <div className="infor-booking">
+                <FormattedMessage id="patient.verify-booking.success" />
+              </div>
             ) : (
               <div className="infor-booking">
-                Lịch hẹn không tồn tại hoặc đã được xác nhận
+                <FormattedMessage id="patient.verify-booking.error" />
               </div>
             )}
           </div>

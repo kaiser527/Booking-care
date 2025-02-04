@@ -338,18 +338,15 @@ const postForgotPasswordService = (data) => {
           if (isExist) {
             isExist.token = token;
             await isExist.save();
-          }
-          await db.ForgotPassword.findOrCreate({
-            where: { status: "NEW", email: user.email },
-            defaults: {
+          } else {
+            await db.ForgotPassword.create({
               email: user.email,
               status: "NEW",
               token: token,
               oldPassword: user.password,
               currentPassword: user.password,
-            },
-          });
-
+            });
+          }
           resolve({
             errCode: 0,
             message: "OK",

@@ -28,6 +28,11 @@ const getTopDoctorHomeService = (limit) => {
           },
         ],
       });
+      if (users && users.length > 0) {
+        users.map((item) => {
+          item.image = new Buffer(item.image, "base64").toString("binary");
+        });
+      }
       resolve({
         errCode: 0,
         data: users,

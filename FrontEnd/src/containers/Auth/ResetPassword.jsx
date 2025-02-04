@@ -3,8 +3,10 @@ import "./ResetPassword.scss";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions";
+import { FormattedMessage, injectIntl } from "react-intl";
+import { toast } from "react-toastify";
 
-const ResetPassword = () => {
+const ResetPassword = (props) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isShowErrorMessage, setIsShowErrorMessage] = useState(false);
@@ -28,50 +30,70 @@ const ResetPassword = () => {
   }, [password, confirmPassword]);
 
   const handleSubmitResetPassword = () => {
-    dispatch(
-      actions.verifyResetPasswordRedux({
-        token: token,
-        email: email,
-        newPassword: confirmPassword,
-      })
-    );
-    history.push("/login");
+    if (!password || !confirmPassword) {
+      toast.error(
+        props.intl.formatMessage({
+          id: "auth.reset-password.missing-password",
+        })
+      );
+    } else {
+      dispatch(
+        actions.verifyResetPasswordRedux({
+          token: token,
+          email: email,
+          newPassword: confirmPassword,
+        })
+      );
+      history.push("/login");
+    }
   };
 
   return (
     <div className="reset-password-backgound">
       <div className="reset-password-container">
         <div className="reset-password-content row">
-          <div className="col-12 reset-title">Reset your password</div>
+          <div className="col-12 reset-title">
+            <FormattedMessage id="auth.reset-password.title" />
+          </div>
           <form className="form-reset-password col-12">
             <div className="form-group">
-              <label>Password</label>
+              <label>
+                <FormattedMessage id="auth.reset-password.label-password" />
+              </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="form-control"
-                placeholder="Enter your new Password"
+                placeholder={props.intl.formatMessage({
+                  id: "auth.reset-password.placeholder-password",
+                })}
               />
               <small className="form-text text-muted">
-                Enter your new password here.
+                <FormattedMessage id="auth.reset-password.small-password" />
               </small>
             </div>
             <div className="form-group">
-              <label>Confirm password</label>
+              <label>
+                <FormattedMessage id="auth.reset-password.title" />
+              </label>
               <input
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="form-control"
-                placeholder="Confirm your new Password"
+                placeholder={props.intl.formatMessage({
+                  id: "auth.reset-password.placeholder-confirm-password",
+                })}
               />
               <small className="form-text text-muted">
-                Confirm your new password.
+                <FormattedMessage id="auth.reset-password.small-confirm-password" />
               </small>
             </div>
             {isShowErrorMessage && (
-              <p style={{ color: "red" }}>Password is not same</p>
+              <p style={{ color: "red" }}>
+                <FormattedMessage id="auth.reset-password.error-message" />
+              </p>
             )}
             <button
               onClick={() => handleSubmitResetPassword()}
@@ -79,7 +101,7 @@ const ResetPassword = () => {
               className="btn btn-primary"
               disabled={isShowErrorMessage}
             >
-              Submit
+              <FormattedMessage id="auth.reset-password.button" />
             </button>
           </form>
         </div>
@@ -88,4 +110,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default injectIntl(ResetPassword);

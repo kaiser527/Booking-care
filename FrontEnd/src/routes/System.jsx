@@ -6,6 +6,7 @@ import Header from "../containers/Header/Header";
 import UserRedux from "../containers/System/Admin/UserRedux";
 import ManageDoctor from "../containers/System/Admin/ManageDoctor";
 import { USER_ROLE } from "../utils";
+import ManageSpecialty from "../containers/System/Specialty/ManageSpecialty";
 
 const System = () => {
   const systemMenuPath = useSelector((state) => state.app.systemMenuPath);
@@ -22,6 +23,10 @@ const System = () => {
               <Route path="/system/user-manage" component={UserManage} />
               <Route path="/system/user-redux" component={UserRedux} />
               <Route path="/system/manage-doctor" component={ManageDoctor} />
+              <Route
+                path="/system/manage-specialty"
+                component={ManageSpecialty}
+              />
               <Route
                 component={() => {
                   return <Redirect to={systemMenuPath} />;

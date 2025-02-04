@@ -39,6 +39,18 @@
       "placeholder": "Địa chỉ email",
       "send-password": "Gửi mật khẩu",
       "return-login": "Trở về đăng nhập"
+    },
+    "reset-password": {
+      "title": "Đặt lại mật khẩu",
+      "label-password": "Mật khẩu",
+      "small-password": "Nhập mật khẩu mới ở đây.",
+      "label-confirm-password": "Xác nhận mật khẩu",
+      "small-confirm-password": "Xác nhận lại mật khẩu mới.",
+      "error-message": "Mật khẩu không trùng khớp",
+      "button": "Xác nhận",
+      "placeholder-password": "Nhập mật khẩu mới",
+      "placeholder-confirm-password": "Xác nhận mật khẩu mới",
+      "missing-password": "Vui lòng nhập mật khẩu mới"
     }
   },
 
@@ -100,7 +112,8 @@
 
   "homepage": {
     "out-standing-doctor": "Bác sĩ nổi bật tuần qua",
-    "more-info": "Xem thêm"
+    "more-info": "Xem thêm",
+    "popular-specialty": "Chuyên khoa phổ biến"
   },
 
   "manage-schedule": {
@@ -109,6 +122,15 @@
     "choose-date": "Lịch khám",
     "save-info": "Lưu thông tin",
     "placeholder": "Chọn ngày"
+  },
+
+  "manage-specialty": {
+    "title": "Quản lý chuyên khoa",
+    "specialty-name": "Tên chuyên khoa",
+    "select-specialty": "Chọn chuyên khoa",
+    "image": "Hình ảnh chuyên khoa",
+    "btn-save": "Lưu",
+    "btn-create": "Tạo"
   },
 
   "patient": {
@@ -144,6 +166,11 @@
       "alert": "Thiếu thông tin cá nhân",
       "free-booking": "Miễn phí đặt lịch",
       "alert-login": "Vui lòng đăng nhập trước khi đặt lịch khám"
+    },
+    "verify-booking": {
+      "loading": "Đang tải dữ liệu...",
+      "success": "Xác nhận lịch hẹn thành công",
+      "error": "Lịch hẹn không tồn tại hoặc đã được xác nhận"
     }
   }
 }
