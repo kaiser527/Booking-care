@@ -8,16 +8,19 @@ import DatePicker from "../../../../components/Input/DatePicker";
 import { useDispatch, useSelector } from "react-redux";
 import { dateFormat, LANGUAGES } from "../../../../utils";
 import moment from "moment";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import _ from "lodash";
 
 const BookingModal = (props) => {
   const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
 
-  const { setIsShowModalBooking, isShowModalBooking, dataScheduleTimeModal } =
-    props;
+  const {
+    setIsShowModalBooking,
+    doctorIdFromParent,
+    isShowModalBooking,
+    dataScheduleTimeModal,
+  } = props;
 
   const [fullName, setFullName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -36,6 +39,10 @@ const BookingModal = (props) => {
   const params = useParams();
 
   const history = useHistory();
+
+  const location = useLocation();
+
+  let pathName = location.pathname.split("/")[1];
 
   useEffect(() => {
     dispatch(actions.fetchGenderPatient());
@@ -106,7 +113,7 @@ const BookingModal = (props) => {
         date: formattedBirthDate,
         reason: reason,
         gender: gender,
-        doctorId: params.id,
+        doctorId: pathName === "detail-doctor" ? params.id : doctorIdFromParent,
         timeType: dataScheduleTimeModal.timeType,
         language: language,
         timeString: timeString,
@@ -158,6 +165,8 @@ const BookingModal = (props) => {
               <ProfileDoctor
                 dataScheduleTimeModal={dataScheduleTimeModal}
                 isShowDescDoctor={false}
+                isShowPrice={true}
+                doctorIdFromParent={doctorIdFromParent}
               />
             </div>
             <div className="row">

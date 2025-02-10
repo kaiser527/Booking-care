@@ -5,6 +5,7 @@ import * as actions from "../../../store/actions";
 import { LANGUAGES } from "../../../utils";
 import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router-dom";
+import "./OutStandingDoctor.scss";
 
 const OutStandingDoctor = (props) => {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ const OutStandingDoctor = (props) => {
                   return (
                     <div
                       key={`top-doctor-${index}`}
-                      className="section-customize"
+                      className="section-customize outstanding-doctor-child"
                       onClick={() =>
                         history.push(`/detail-doctor/${doctor.id}`)
                       }
@@ -55,7 +56,7 @@ const OutStandingDoctor = (props) => {
                           ></div>
                         </div>
                         <div className="position text-center">
-                          <div>
+                          <div className="doctor-name">
                             {language === LANGUAGES.VI ? nameVi : nameEn}
                           </div>
                           <div>Cơ Xương Khớp</div>

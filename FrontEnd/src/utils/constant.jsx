@@ -8,6 +8,7 @@ export const path = {
   VERIFY_EMAIL_BOOKING: "/verify-booking",
   FORGOT_PASSWORD: "/forgot-password",
   RESER_PASSWORD: "/verify-reset-password",
+  DETAIL_SPECIALTY: "/detail-specialty/:id",
 };
 
 export const LANGUAGES = {

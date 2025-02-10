@@ -1,25 +1,30 @@
 import { useEffect, useState } from "react";
 import moment from "moment";
 import localization from "moment/locale/vi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { dateFormat, LANGUAGES } from "../../../utils";
-import * as actions from "../../../store/actions";
 import { useParams } from "react-router-dom";
 import { FormattedMessage, injectIntl } from "react-intl";
 import "./DoctorSchedule.scss";
 import BookingModal from "./Modal/BookingModal";
+import { useLocation } from "react-router-dom";
+import { getScheduleDoctorByDate } from "../../../services/doctorService";
 
 const DoctorSchedule = (props) => {
+  const { doctorIdFromParent } = props;
+
   const [allDays, setAllDays] = useState([]);
   const [isShowModalBooking, setIsShowModalBooking] = useState(false);
   const [dataScheduleTimeModal, setDataScheduleTimeModal] = useState({});
+  const [doctorSchedule, setDoctorSchedule] = useState([]);
 
   const params = useParams();
 
-  const dispatch = useDispatch();
+  const location = useLocation();
+
+  let pathName = location.pathname.split("/")[1];
 
   const language = useSelector((state) => state.app.language);
-  const doctorSchedule = useSelector((state) => state.doctor.doctorSchedule);
 
   useEffect(() => {
     let allDays = getArrDays(language);
@@ -27,17 +32,23 @@ const DoctorSchedule = (props) => {
   }, [language]);
 
   useEffect(() => {
+    getScheduleDoctor();
+    return () => {
+      setDoctorSchedule([]);
+    };
+  }, [doctorIdFromParent]);
+
+  const getScheduleDoctor = async () => {
     let allDays = getArrDays(language);
     let formattedDate = new Date(allDays[0].value);
     if (allDays && allDays.length > 0) {
-      dispatch(
-        actions.getScheduleDoctorByDateRedux(
-          params.id,
-          moment(formattedDate).format(dateFormat.SEND_TO_SERVER)
-        )
+      let res = await getScheduleDoctorByDate(
+        pathName === "detail-doctor" ? params.id : doctorIdFromParent,
+        moment(formattedDate).format(dateFormat.SEND_TO_SERVER)
       );
+      if (res && res.errCode === 0) setDoctorSchedule(res.data);
     }
-  }, []);
+  };
 
   const handleClickScheduleTime = (schedule) => {
     setIsShowModalBooking(true);
@@ -86,16 +97,15 @@ const DoctorSchedule = (props) => {
     return String(val).charAt(0).toUpperCase() + String(val).slice(1);
   };
 
-  const handleOnChangeSelect = (event) => {
+  const handleOnChangeSelect = async (event) => {
     if (params && params.id) {
       let date = event.target.value;
       let formattedDate = new Date(+date);
-      dispatch(
-        actions.getScheduleDoctorByDateRedux(
-          params.id,
-          moment(formattedDate).format(dateFormat.SEND_TO_SERVER)
-        )
+      let res = await getScheduleDoctorByDate(
+        pathName === "detail-doctor" ? params.id : doctorIdFromParent,
+        moment(formattedDate).format(dateFormat.SEND_TO_SERVER)
       );
+      if (res && res.errCode === 0) setDoctorSchedule(res.data);
     }
   };
 
@@ -160,6 +170,7 @@ const DoctorSchedule = (props) => {
         </div>
       </div>
       <BookingModal
+        doctorIdFromParent={doctorIdFromParent}
         setIsShowModalBooking={setIsShowModalBooking}
         isShowModalBooking={isShowModalBooking}
         dataScheduleTimeModal={dataScheduleTimeModal}

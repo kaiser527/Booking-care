@@ -21,6 +21,7 @@ import * as actions from "../store/actions";
 import VerifyEmail from "./Patient/VerifyEmail";
 import ForgotPassword from "./Auth/ForgotPassword";
 import ResetPassword from "./Auth/ResetPassword";
+import DetailSpecialty from "./Patient/Specialty/DetailSpecialty";
 
 const App = (props) => {
   const { persistor } = props;
@@ -86,6 +87,10 @@ const App = (props) => {
                 />
                 <Route path={path.HOMEPAGE} component={HomePage} />
                 <Route path={path.DETAIL_DOCTOR} component={DetailDoctor} />
+                <Route
+                  path={path.DETAIL_SPECIALTY}
+                  component={DetailSpecialty}
+                />
                 <Route
                   path={path.VERIFY_EMAIL_BOOKING}
                   component={VerifyEmail}

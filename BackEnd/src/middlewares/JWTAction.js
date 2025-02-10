@@ -16,6 +16,8 @@ const nonSecurePaths = [
   "/api/forgot-password",
   "/api/reset-user-password",
   "/api/get-all-specialties",
+  "/api/get-detail-specialty-by-id",
+  "/api/get-province-specialty",
 ];
 
 const createJWT = (payload) => {

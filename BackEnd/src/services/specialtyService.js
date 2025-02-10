@@ -88,4 +88,69 @@ const getAllSpecialtyService = () => {
   });
 };
 
-export { createNewSpecialtyService, getAllSpecialtyService };
+const getSpecialtyByIdService = (inputId, location) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!inputId || !location) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required paramenter!",
+        });
+      } else {
+        const includeCondition =
+          location !== "ALL"
+            ? [
+                {
+                  model: db.Doctor_infor,
+                  where: { provinceId: location },
+                  as: "doctorSpecialty",
+                  attributes: ["doctorId", "provinceId"],
+                },
+              ]
+            : [
+                {
+                  model: db.Doctor_infor,
+                  as: "doctorSpecialty",
+                  attributes: ["doctorId", "provinceId"],
+                },
+              ];
+        let data = await db.Specialty.findOne({
+          where: { id: inputId },
+          attributes: ["descriptionHTML", "descriptionMarkdown"],
+          include: includeCondition,
+        });
+        resolve({
+          errCode: 0,
+          message: "OK",
+          data: data ? data : {},
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getProvinceSpecialtyService = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let allcode = await db.Allcode.findAll({
+        where: { type: "PROVINCE" },
+      });
+      resolve({
+        errCode: 0,
+        message: "Ok",
+        data: allcode,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+export {
+  createNewSpecialtyService,
+  getSpecialtyByIdService,
+  getAllSpecialtyService,
+  getProvinceSpecialtyService,
+};

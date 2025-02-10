@@ -43,6 +43,8 @@ import {
 import {
   createNewSpecialty,
   getAllSpecialty,
+  getSpecialtyById,
+  getProvinceSpecialty,
 } from "../controllers/specialtyController";
 
 //check user permission
@@ -87,6 +89,8 @@ router.post("/api/verify-book-appointment", postVerifyBookAppointment);
 //api specialty
 router.post("/api/create-new-specialty", createNewSpecialty);
 router.get("/api/get-all-specialties", getAllSpecialty);
+router.get("/api/get-detail-specialty-by-id", getSpecialtyById);
+router.get("/api/get-province-specialty", getProvinceSpecialty);
 
 //api all code
 router.get("/api/allcode", getAllCode);

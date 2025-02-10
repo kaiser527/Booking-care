@@ -100,14 +100,18 @@
     "info-placeholder": {
       "price": "Select examination price",
       "payment-method": "Select payment method",
-      "province": "Select province"
+      "province": "Select province",
+      "specialty": "Select specialty",
+      "clinic": "Select clinic"
     },
     "price": "Examination price",
     "payment": "Payment method",
     "province": "Province",
     "clinic-name": "Clinic name",
     "clinic-address": "Clinic address",
-    "note": "Note"
+    "note": "Note",
+    "specialty": "Specialty",
+    "clinic": "Clinic"
   },
 
   "homepage": {
@@ -171,6 +175,9 @@
       "loading": "Loading data...",
       "success": "Appointment confirmed successfully",
       "error": "Appointment schedule does not exist or has been confirmed"
+    },
+    "profile-doctor": {
+      "link-detail": "More info"
     }
   }
 }

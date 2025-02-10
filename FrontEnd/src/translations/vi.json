@@ -100,14 +100,18 @@
     "info-placeholder": {
       "price": "Chọn giá khám bệnh",
       "payment-method": "Chọn phương thức thanh toán",
-      "province": "Chọn tỉnh thành"
+      "province": "Chọn tỉnh thành",
+      "specialty": "Chọn chuyên khoa",
+      "clinic": "Chọn phòng khám"
     },
     "price": "Giá khám bệnh",
     "payment": "Phương thức thanh toán",
     "province": "Tỉnh thành",
     "clinic-name": "Tên phòng khám",
     "clinic-address": "Địa chỉ phòng khám",
-    "note": "Ghi chú"
+    "note": "Ghi chú",
+    "specialty": "Chuyên khoa",
+    "clinic": "Phòng khám"
   },
 
   "homepage": {
@@ -171,6 +175,9 @@
       "loading": "Đang tải dữ liệu...",
       "success": "Xác nhận lịch hẹn thành công",
       "error": "Lịch hẹn không tồn tại hoặc đã được xác nhận"
+    },
+    "profile-doctor": {
+      "link-detail": "Xem thêm"
     }
   }
 }

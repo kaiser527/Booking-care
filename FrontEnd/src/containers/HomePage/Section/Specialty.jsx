@@ -4,9 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../store/actions";
 import Slider from "react-slick";
 import { LANGUAGES } from "../../../utils";
+import "./Specialty.scss";
+import { useHistory } from "react-router-dom";
 
 const Specialty = (props) => {
   const dispatch = useDispatch();
+
+  const history = useHistory();
 
   const language = useSelector((state) => state.app.language);
   const specialties = useSelector((state) => state.specialty.specialties);
@@ -32,14 +36,18 @@ const Specialty = (props) => {
               specialties.length > 0 &&
               specialties.map((item, index) => {
                 return (
-                  <div key={`specialty-${index}`} className="section-customize">
+                  <div
+                    key={`specialty-${index}`}
+                    className="section-customize specialty-child"
+                    onClick={() => history.push(`/detail-specialty/${item.id}`)}
+                  >
                     <div
                       className="bg-image section-specialty"
                       style={{
                         backgroundImage: `url(${item.image})`,
                       }}
                     ></div>
-                    <div>
+                    <div className="specialty-name">
                       {language === LANGUAGES.VI ? item.nameVi : item.nameEn}
                     </div>
                   </div>

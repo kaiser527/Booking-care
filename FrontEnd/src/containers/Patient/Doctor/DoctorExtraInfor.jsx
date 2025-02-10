@@ -1,13 +1,37 @@
 import "./DoctorExtraInfor.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LANGUAGES } from "../../../utils";
 import NumberFormat from "react-number-format";
 import { FormattedMessage } from "react-intl";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { getDetailInforDoctor } from "../../../services/doctorService";
+import { useParams } from "react-router-dom";
 
 const DoctorExtraInfor = (props) => {
-  const { detailDoctor, language } = props;
+  const { doctorIdFromParent, isShowPrice } = props;
+
+  const language = useSelector((state) => state.app.language);
 
   const [isShowDetailInfor, setIsShowDetailInfor] = useState(false);
+  const [detailDoctor, setDetailDoctor] = useState({});
+
+  const location = useLocation();
+
+  let pathName = location.pathname.split("/")[1];
+
+  const params = useParams();
+
+  useEffect(() => {
+    getAllDetailDoctor();
+  }, [doctorIdFromParent]);
+
+  const getAllDetailDoctor = async () => {
+    let res = await getDetailInforDoctor(
+      pathName === "detail-doctor" ? params.id : doctorIdFromParent
+    );
+    if (res && res.errCode === 0) setDetailDoctor(res.data);
+  };
 
   return (
     <div className="doctor-extra-infor-container">

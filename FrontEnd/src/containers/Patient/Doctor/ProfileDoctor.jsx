@@ -1,28 +1,45 @@
 import "./ProfileDoctor.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import * as actions from "../../../store/actions";
-import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useParams, useLocation, useHistory } from "react-router-dom";
 import { LANGUAGES } from "../../../utils";
 import NumberFormat from "react-number-format";
 import _ from "lodash";
 import moment from "moment";
 import { FormattedMessage } from "react-intl";
 import localization from "moment/locale/vi";
+import { getProfileDoctor } from "../../../services/doctorService";
 
 const ProfileDoctor = (props) => {
-  const { isShowDescDoctor, dataScheduleTimeModal } = props;
+  const {
+    isShowDescDoctor,
+    isShowLinkDetail,
+    isShowPrice,
+    doctorIdFromParent,
+    dataScheduleTimeModal,
+  } = props;
+  const [profileDoctor, setProfileDoctor] = useState({});
 
-  const profileDoctor = useSelector((state) => state.doctor.profileDoctor);
   const language = useSelector((state) => state.app.language);
-
-  const dispatch = useDispatch();
 
   const params = useParams();
 
+  const location = useLocation();
+
+  const history = useHistory();
+
+  let pathName = location.pathname.split("/")[1];
+
   useEffect(() => {
-    dispatch(actions.getProfileDoctorRedux(params.id));
-  }, []);
+    getAllProfileDoctor();
+  }, [doctorIdFromParent]);
+
+  const getAllProfileDoctor = async () => {
+    let res = await getProfileDoctor(
+      pathName === "detail-doctor" ? params.id : doctorIdFromParent
+    );
+    if (res && res.errCode === 0) setProfileDoctor(res.data);
+  };
 
   const capitalizeFirstLetter = (val) => {
     return String(val).charAt(0).toUpperCase() + String(val).slice(1);
@@ -88,24 +105,34 @@ const ProfileDoctor = (props) => {
           </div>
         </div>
       </div>
-      <div className="price">
-        <FormattedMessage id="patient.booking-modal.price" />:{" "}
-        {profileDoctor &&
-          profileDoctor.infoData &&
-          profileDoctor.infoData.priceData && (
-            <NumberFormat
-              value={
-                language === LANGUAGES.VI
-                  ? profileDoctor.infoData.priceData.valueVi
-                  : profileDoctor.infoData.priceData.valueEn
-              }
-              className="currency"
-              displayType={"text"}
-              thousandSeparator={true}
-              suffix={language === LANGUAGES.VI ? "đ" : "$"}
-            />
-          )}
-      </div>
+      {isShowLinkDetail && (
+        <div
+          className="view-detail-doctor"
+          onClick={() => history.push(`/detail-doctor/${doctorIdFromParent}`)}
+        >
+          <FormattedMessage id="patient.profile-doctor.link-detail" />
+        </div>
+      )}
+      {isShowPrice && (
+        <div className="price">
+          <FormattedMessage id="patient.booking-modal.price" />:{" "}
+          {profileDoctor &&
+            profileDoctor.infoData &&
+            profileDoctor.infoData.priceData && (
+              <NumberFormat
+                value={
+                  language === LANGUAGES.VI
+                    ? profileDoctor.infoData.priceData.valueVi
+                    : profileDoctor.infoData.priceData.valueEn
+                }
+                className="currency"
+                displayType={"text"}
+                thousandSeparator={true}
+                suffix={language === LANGUAGES.VI ? "đ" : "$"}
+              />
+            )}
+        </div>
+      )}
     </div>
   );
 };

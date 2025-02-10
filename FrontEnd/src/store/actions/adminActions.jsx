@@ -7,6 +7,7 @@ import {
   editUserService,
 } from "../../services/userService";
 import { toast } from "react-toastify";
+import { getAllSpecialty } from "../../services/specialtyService";
 
 export const fetchGenderStart = () => {
   return async (dispatch, getState) => {
@@ -196,19 +197,22 @@ export const fetchRequiredDoctorInfo = () => {
       const resProvince = await getAllCodeService("PROVINCE");
       const resPrice = await getAllCodeService("PRICE");
       const resPayment = await getAllCodeService("PAYMENT");
+      const resSpecialty = await getAllSpecialty();
       if (
         resProvince &&
         resProvince.errCode === 0 &&
         resPrice &&
         resPrice.errCode === 0 &&
         resPayment &&
-        resPayment.errCode === 0
+        resPayment.errCode === 0 &&
+        resSpecialty.errCode === 0
       ) {
         dispatch(
           fetchRequiredDoctorInfoSuccess({
             resPrice: resPrice.data,
             resProvince: resProvince.data,
             resPayment: resPayment.data,
+            resSpecialty: resSpecialty.data,
           })
         );
       } else {

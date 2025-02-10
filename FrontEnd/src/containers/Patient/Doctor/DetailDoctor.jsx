@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useLocation, useParams } from "react-router-dom";
 import "./DetailDoctor.scss";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../store/actions";
@@ -8,16 +8,20 @@ import DoctorSchedule from "./DoctorSchedule";
 import DoctorExtraInfor from "./DoctorExtraInfor";
 import SectionHeader from "../SectionHeader";
 
-const DetailDoctor = () => {
+const DetailDoctor = (props) => {
   const params = useParams();
 
   const dispatch = useDispatch();
+
+  const location = useLocation();
+
+  let pathName = location.pathname.split("/")[1];
 
   const detailDoctor = useSelector((state) => state.doctor.detailDoctor);
   const language = useSelector((state) => state.app.language);
 
   useEffect(() => {
-    if (params && params.id) {
+    if (params && params.id && pathName === "detail-doctor") {
       dispatch(actions.getDetailDoctorRedux(params.id));
     }
   }, []);
@@ -59,7 +63,7 @@ const DetailDoctor = () => {
             <DoctorSchedule />
           </div>
           <div className="content-right">
-            <DoctorExtraInfor language={language} detailDoctor={detailDoctor} />
+            <DoctorExtraInfor />
           </div>
         </div>
         <div className="detail-info-doctor">

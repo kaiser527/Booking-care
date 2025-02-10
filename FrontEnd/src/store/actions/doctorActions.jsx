@@ -190,31 +190,6 @@ export const bulkCreateDoctorFailed = () => ({
   type: actionTypes.SAVE_BULK_SCHEDULE_DOCTOR_FAILED,
 });
 
-export const getScheduleDoctorByDateRedux = (doctorId, date) => {
-  return async (dispatch, getState) => {
-    try {
-      const res = await getScheduleDoctorByDate(doctorId, date);
-      if (res && res.errCode === 0) {
-        dispatch(getScheduleDoctorByDateSuccess(res.data));
-      } else {
-        dispatch(getScheduleDoctorByDateFailed());
-      }
-    } catch (e) {
-      dispatch(getScheduleDoctorByDateFailed());
-      console.log(e);
-    }
-  };
-};
-
-export const getScheduleDoctorByDateSuccess = (scheduleData) => ({
-  type: actionTypes.GET_SCHEDULE_DOCTOR_BY_DATE_SUCCESS,
-  data: scheduleData,
-});
-
-export const getScheduleDoctorByDateFailed = () => ({
-  type: actionTypes.GET_SCHEDULE_DOCTOR_BY_DATE_FAILED,
-});
-
 export const deletePastScheduleDoctorRedux = (date) => {
   return async (dispatch, getState) => {
     try {
@@ -239,29 +214,4 @@ export const deletePastScheduleDoctorSuccess = () => ({
 
 export const deletePastScheduleDoctorFailed = () => ({
   type: actionTypes.DELETE_PAST_SCHEDULE_DOCTOR_FAILED,
-});
-
-export const getProfileDoctorRedux = (id) => {
-  return async (dispatch, getState) => {
-    try {
-      const res = await getProfileDoctor(id);
-      if (res && res.errCode === 0) {
-        dispatch(getProfileDoctorSuccess(res.data));
-      } else {
-        dispatch(getProfileDoctorFailed());
-      }
-    } catch (e) {
-      dispatch(getProfileDoctorFailed());
-      console.log(e);
-    }
-  };
-};
-
-export const getProfileDoctorSuccess = (doctorData) => ({
-  type: actionTypes.GET_DOCTOR_PROFILE_SUCCESS,
-  data: doctorData,
-});
-
-export const getProfileDoctorFailed = () => ({
-  type: actionTypes.GET_DOCTOR_PROFILE_FAILED,
 });

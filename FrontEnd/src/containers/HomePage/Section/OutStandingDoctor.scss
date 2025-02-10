@@ -1,0 +1,10 @@
+.outstanding-doctor-child {
+  cursor: pointer;
+  .doctor-name {
+    padding: 5px 0;
+    &:hover {
+      color: #45c3d2;
+      transition: all 0.2s;
+    }
+  }
+}

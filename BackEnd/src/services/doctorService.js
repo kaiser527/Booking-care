@@ -64,6 +64,7 @@ const getAllDoctorsService = () => {
 
 const checkInput = (data) => {
   let isValid = true;
+  let element = "";
   let arrInput = [
     "doctorId",
     "contentHTML",
@@ -75,23 +76,28 @@ const checkInput = (data) => {
     "clinicName",
     "clinicAddress",
     "note",
+    "specialtyId",
+    //"clinicId",
   ];
   for (let i = 0; i < arrInput.length; i++) {
     if (!data[arrInput[i]]) {
       isValid = false;
+      element = arrInput[i];
       break;
     }
   }
-  return isValid;
+  return { isValid, element };
 };
 
 const saveDetailInfoDoctor = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (checkInput(data) === false)
+      if (checkInput(data).isValid === false)
         resolve({
           errCode: 1,
-          errMessage: "Missing required paramenter!",
+          errMessage: `Missing required paramenter: ${
+            checkInput(data).element
+          }`,
         });
       else {
         if (data.action === "CREATE") {
@@ -125,6 +131,8 @@ const saveDetailInfoDoctor = (data) => {
           doctorInfo.nameClinic = data.clinicName;
           doctorInfo.addressClinic = data.clinicAddress;
           doctorInfo.note = data.note;
+          doctorInfo.specialtyId = data.specialtyId;
+          //doctorInfo.clinicId = data.clinicId;
 
           await doctorInfo.save();
         } else {
@@ -136,6 +144,8 @@ const saveDetailInfoDoctor = (data) => {
             nameClinic: data.clinicName,
             addressClinic: data.clinicAddress,
             note: data.note,
+            specialtyId: data.specialtyId,
+            //clinicId: data.clinicId,
           });
         }
         resolve({
@@ -240,6 +250,8 @@ const getDoctorMarkdownById = (doctorId) => {
                 "note",
                 "addressClinic",
                 "nameClinic",
+                "specialtyId",
+                "clinicId",
               ],
             },
           ],
