@@ -117,7 +117,8 @@
   "homepage": {
     "out-standing-doctor": "Outstanding doctor last week",
     "more-info": "More info",
-    "popular-specialty": "Popular specialties"
+    "popular-specialty": "Popular specialties",
+    "medical-facility": "Outstanding medical facility"
   },
 
   "manage-schedule": {
@@ -135,6 +136,16 @@
     "image": "Specialty image",
     "btn-save": "Save",
     "btn-create": "Create"
+  },
+
+  "manage-clinic": {
+    "title": "Manage Clinic",
+    "specialty-name": "Clinic name",
+    "select-specialty": "Select clinic",
+    "image": "Clinic image",
+    "btn-save": "Save",
+    "btn-create": "Create",
+    "address": "Clinic address"
   },
 
   "patient": {

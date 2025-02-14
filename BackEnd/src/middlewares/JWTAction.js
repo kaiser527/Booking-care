@@ -18,6 +18,8 @@ const nonSecurePaths = [
   "/api/get-all-specialties",
   "/api/get-detail-specialty-by-id",
   "/api/get-province-specialty",
+  "/api/get-all-clinics",
+  "/api/get-detail-clinic-by-id",
 ];
 
 const createJWT = (payload) => {

@@ -64,6 +64,7 @@ const ManageDoctor = (props) => {
       infoData.resSpecialty,
       "SPECIALTY"
     );
+    let dataSelectClinic = buildInputSelect(infoData.resClinic, "SPECIALTY");
     let dataSelectDoctor = buildInputSelect(doctors, "DOCTOR");
     setListDoctor(doctors && doctors.length > 0 ? dataSelectDoctor : []);
     setListPrice(
@@ -84,6 +85,11 @@ const ManageDoctor = (props) => {
     setListSpecialty(
       infoData && infoData.resSpecialty && infoData.resSpecialty.length > 0
         ? datSelectSpecialty
+        : []
+    );
+    setListClinic(
+      infoData && infoData.resClinic && infoData.resClinic.length > 0
+        ? dataSelectClinic
         : []
     );
   }, [getAllData]);
@@ -110,23 +116,21 @@ const ManageDoctor = (props) => {
       let selectedSpecialty = listSpecialty.find(
         (item) => item.value === doctorMarkdown.infoDataMarkdown.specialtyId
       );
-      if (
-        selectedSpecialty &&
-        selectedPayment &&
-        selectedPrice &&
-        selectedProvince
-      ) {
-        setSelectedPrice(selectedPrice);
-        setSelectedPayment(selectedPayment);
-        setSelectedProvince(selectedProvince);
-        setSelectedSpecialty(selectedSpecialty);
-      }
+      let selectedClinic = listClinic.find(
+        (item) => item.value === doctorMarkdown.infoDataMarkdown.clinicId
+      );
+      setSelectedPrice(selectedPrice);
+      setSelectedPayment(selectedPayment);
+      setSelectedProvince(selectedProvince);
+      setSelectedSpecialty(selectedSpecialty);
+      setSelectedClinic(selectedClinic);
     }
     return () => {
       setSelectedPrice({});
       setSelectedPayment({});
       setSelectedProvince({});
       setSelectedSpecialty({});
+      setSelectedClinic({});
       setContentMarkdown("");
       setContentHTML("");
       setDescription("");

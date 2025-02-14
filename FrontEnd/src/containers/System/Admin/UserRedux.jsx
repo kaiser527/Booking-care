@@ -147,18 +147,13 @@ const UserRedux = () => {
   };
 
   const handleEditUserFromParent = (user) => {
-    let imageBase64 = "";
-    if (user.image) {
-      imageBase64 = new Buffer(user.image, "base64").toString("binary");
-    }
-
     setEmail(user.email);
     setPassword("HashPassword");
     setFullName(user.fullName);
     setPhoneNumber(user.phoneNumber);
     setAddress(user.address);
     setAvatar("");
-    setPreviewImageURL(imageBase64);
+    setPreviewImageURL(user.image);
     setGender(user.gender);
     setRole(user.roleId);
     setPosition(user.positionId);

@@ -8,6 +8,7 @@ import {
 } from "../../services/userService";
 import { toast } from "react-toastify";
 import { getAllSpecialty } from "../../services/specialtyService";
+import { getAllClinic } from "../../services/clinicService";
 
 export const fetchGenderStart = () => {
   return async (dispatch, getState) => {
@@ -198,6 +199,7 @@ export const fetchRequiredDoctorInfo = () => {
       const resPrice = await getAllCodeService("PRICE");
       const resPayment = await getAllCodeService("PAYMENT");
       const resSpecialty = await getAllSpecialty();
+      const resClinic = await getAllClinic();
       if (
         resProvince &&
         resProvince.errCode === 0 &&
@@ -205,7 +207,8 @@ export const fetchRequiredDoctorInfo = () => {
         resPrice.errCode === 0 &&
         resPayment &&
         resPayment.errCode === 0 &&
-        resSpecialty.errCode === 0
+        resSpecialty.errCode === 0 &&
+        resClinic.errCode === 0
       ) {
         dispatch(
           fetchRequiredDoctorInfoSuccess({
@@ -213,6 +216,7 @@ export const fetchRequiredDoctorInfo = () => {
             resProvince: resProvince.data,
             resPayment: resPayment.data,
             resSpecialty: resSpecialty.data,
+            resClinic: resClinic.data,
           })
         );
       } else {

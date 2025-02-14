@@ -134,6 +134,11 @@ const getUserWithPagination = (page, limit) => {
         totalPages: Math.ceil(count / limit),
         users: rows,
       };
+      if (data.users && data.users.length > 0) {
+        data.users.map((item) => {
+          item.image = new Buffer(item.image, "base64").toString("binary");
+        });
+      }
       resolve(data);
     } catch (e) {
       reject(e);

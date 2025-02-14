@@ -22,6 +22,7 @@ import VerifyEmail from "./Patient/VerifyEmail";
 import ForgotPassword from "./Auth/ForgotPassword";
 import ResetPassword from "./Auth/ResetPassword";
 import DetailSpecialty from "./Patient/Specialty/DetailSpecialty";
+import DetailClinic from "./Patient/Clinic/DetailClinic";
 
 const App = (props) => {
   const { persistor } = props;
@@ -96,7 +97,8 @@ const App = (props) => {
                   component={VerifyEmail}
                 />
                 <Route path={path.FORGOT_PASSWORD} component={ForgotPassword} />
-                <Route path={path.RESER_PASSWORD} component={ResetPassword} />
+                <Route path={path.RESET_PASSWORD} component={ResetPassword} />
+                <Route path={path.DETAIL_CLINIC} component={DetailClinic} />
               </Switch>
             </CustomScrollbars>
           </div>

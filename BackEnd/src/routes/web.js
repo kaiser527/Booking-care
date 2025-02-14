@@ -46,6 +46,11 @@ import {
   getSpecialtyById,
   getProvinceSpecialty,
 } from "../controllers/specialtyController";
+import {
+  createNewClinic,
+  getAllClinic,
+  getDetailClinicById,
+} from "../controllers/clinicController";
 
 //check user permission
 router.all("*", checkUserJWT, checkUserPermisson);
@@ -91,6 +96,11 @@ router.post("/api/create-new-specialty", createNewSpecialty);
 router.get("/api/get-all-specialties", getAllSpecialty);
 router.get("/api/get-detail-specialty-by-id", getSpecialtyById);
 router.get("/api/get-province-specialty", getProvinceSpecialty);
+
+//api clinic
+router.post("/api/create-new-clinic", createNewClinic);
+router.get("/api/get-all-clinics", getAllClinic);
+router.get("/api/get-detail-clinic-by-id", getDetailClinicById);
 
 //api all code
 router.get("/api/allcode", getAllCode);

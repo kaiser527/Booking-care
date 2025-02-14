@@ -117,7 +117,8 @@
   "homepage": {
     "out-standing-doctor": "Bác sĩ nổi bật tuần qua",
     "more-info": "Xem thêm",
-    "popular-specialty": "Chuyên khoa phổ biến"
+    "popular-specialty": "Chuyên khoa phổ biến",
+    "medical-facility": "Cơ sở y tế nổi bật"
   },
 
   "manage-schedule": {
@@ -135,6 +136,16 @@
     "image": "Hình ảnh chuyên khoa",
     "btn-save": "Lưu",
     "btn-create": "Tạo"
+  },
+
+  "manage-clinic": {
+    "title": "Quản lý phòng khám",
+    "specialty-name": "Tên phòng khám",
+    "select-specialty": "Chọn phòng khám",
+    "image": "Hình ảnh phòng khám",
+    "btn-save": "Lưu",
+    "btn-create": "Tạo",
+    "address": "Địa chỉ phòng khám"
   },
 
   "patient": {
