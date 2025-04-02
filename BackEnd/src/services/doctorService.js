@@ -26,6 +26,18 @@ const getTopDoctorHomeService = (limit) => {
             as: "genderData",
             attributes: ["valueEn", "valueVi"],
           },
+          {
+            model: db.Doctor_infor,
+            as: "infoData",
+            attributes: ["specialtyId"],
+            include: [
+              {
+                model: db.Specialty,
+                as: "doctorSpecialty",
+                attributes: ["nameVi", "nameEn"],
+              },
+            ],
+          },
         ],
       });
       if (users && users.length > 0) {
@@ -489,6 +501,58 @@ const getProfileDoctorByIdService = (id) => {
   });
 };
 
+const getListPatientForDoctorService = (page, limit, doctorId, date) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!date || !doctorId) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required paramenter!",
+        });
+      } else {
+        const offset = (page - 1) * limit;
+        const { count, rows } = await db.Booking.findAndCountAll({
+          offset: offset,
+          limit: limit,
+          where: { statusId: "S2", date: date, doctorId: doctorId },
+          include: [
+            {
+              model: db.User,
+              attributes: ["email", "fullName", "address", "gender"],
+              as: "userData",
+              include: [
+                {
+                  model: db.Allcode,
+                  attributes: ["valueVi", "valueEn"],
+                  as: "genderData",
+                },
+              ],
+            },
+            {
+              model: db.Allcode,
+              attributes: ["valueEn", "valueVi"],
+              as: "timeData",
+            },
+          ],
+          nest: true,
+          raw: false,
+        });
+        const data = {
+          totalRows: count,
+          totalPages: Math.ceil(count / limit),
+          patients: rows,
+        };
+        resolve({
+          errCode: 0,
+          data: data,
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 export {
   getTopDoctorHomeService,
   getAllDoctorsService,
@@ -500,4 +564,5 @@ export {
   deletePastScheduleDoctorService,
   getPastDoctorScheduleService,
   getProfileDoctorByIdService,
+  getListPatientForDoctorService,
 };

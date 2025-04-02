@@ -14,7 +14,7 @@ const ManageSchedule = (props) => {
 
   const [selectedDoctor, setSelectedDoctor] = useState({});
   const [listDoctor, setListDoctor] = useState([]);
-  const [currentDate, setCurrentDate] = useState("");
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [rangeTime, setRangeTime] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./TableManageUser.scss";
 import { useSelector } from "react-redux";
 import * as actions from "../../../store/actions";

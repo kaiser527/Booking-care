@@ -59,7 +59,11 @@ const OutStandingDoctor = (props) => {
                           <div className="doctor-name">
                             {language === LANGUAGES.VI ? nameVi : nameEn}
                           </div>
-                          <div>Cơ Xương Khớp</div>
+                          <div>
+                            {language === LANGUAGES.VI
+                              ? doctor.infoData.doctorSpecialty.nameVi
+                              : doctor.infoData.doctorSpecialty.nameEn}
+                          </div>
                         </div>
                       </div>
                     </div>

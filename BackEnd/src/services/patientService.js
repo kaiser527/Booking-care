@@ -5,14 +5,24 @@ import { v4 as uuidv4 } from "uuid";
 
 const checkValidInput = (data) => {
   let isValid = true;
-  let arrInput = ["email", "doctorId", "timeType", "date", "fullName"];
+  let element = "";
+  let arrInput = [
+    "email",
+    "doctorId",
+    "timeType",
+    "date",
+    "fullName",
+    "gender",
+    "address",
+  ];
   for (let i = 0; i < arrInput.length; i++) {
     if (!data[arrInput[i]]) {
       isValid = false;
+      element = arrInput[i];
       break;
     }
   }
-  return isValid;
+  return { isValid, element };
 };
 
 const buildUrlEmail = (doctorId, token) => {
@@ -23,10 +33,12 @@ const buildUrlEmail = (doctorId, token) => {
 const postBookAppointmentService = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (checkValidInput(data) === false) {
+      if (checkValidInput(data).isValid === false) {
         resolve({
           errCode: 1,
-          errMessage: "Missing required paramenter!",
+          errMessage: `Missing required paramenter: ${
+            checkValidInput(data).element
+          }`,
         });
       } else {
         let token = uuidv4();
@@ -43,6 +55,9 @@ const postBookAppointmentService = (data) => {
           defaults: {
             email: data.email,
             roleId: "R3",
+            gender: data.gender,
+            address: data.address,
+            fullName: data.fullName,
           },
           attributes: ["id"],
           raw: true,

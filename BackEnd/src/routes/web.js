@@ -33,6 +33,7 @@ import {
   deletePastScheduleDoctor,
   getPastDoctorSchedule,
   getProfileDoctorById,
+  getListPatientForDoctor,
 } from "../controllers/doctorController";
 import { checkUserJWT, checkUserPermisson } from "../middlewares/JWTAction";
 import {
@@ -85,6 +86,7 @@ router.get("/api/get-schedule-doctor-by-date", getScheduleByDate);
 router.delete("/api/delete-past-schedule-doctor", deletePastScheduleDoctor);
 router.get("/api/get-past-doctor-schedule", getPastDoctorSchedule);
 router.get("/api/get-profile-doctor-by-id", getProfileDoctorById);
+router.get("/api/get-list-patient-for-doctor", getListPatientForDoctor);
 
 //api patient book appointment
 router.post("/api/patient-book-appointment", postBookAppointment);

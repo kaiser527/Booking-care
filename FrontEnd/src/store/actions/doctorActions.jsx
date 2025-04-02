@@ -9,6 +9,7 @@ import {
   getScheduleDoctorByDate,
   deletePastScheduleDoctorAPI,
   getProfileDoctor,
+  getListPatientForDoctor,
 } from "../../services/doctorService";
 import { toast } from "react-toastify";
 import { getAllCodeService } from "../../services/userService";
@@ -196,10 +197,8 @@ export const deletePastScheduleDoctorRedux = (date) => {
       const res = await deletePastScheduleDoctorAPI(date);
       if (res && res.errCode === 0) {
         dispatch(deletePastScheduleDoctorSuccess());
-        toast.success(res.message);
       } else {
         dispatch(deletePastScheduleDoctorFailed());
-        toast.error(res.errMessage);
       }
     } catch (e) {
       dispatch(deletePastScheduleDoctorFailed());
@@ -214,4 +213,29 @@ export const deletePastScheduleDoctorSuccess = () => ({
 
 export const deletePastScheduleDoctorFailed = () => ({
   type: actionTypes.DELETE_PAST_SCHEDULE_DOCTOR_FAILED,
+});
+
+export const getListPatientForDoctorRedux = (page, limit, doctorId, date) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await getListPatientForDoctor(page, limit, doctorId, date);
+      if (res && res.errCode === 0) {
+        dispatch(getListPatientForDoctorSuccess(res.data));
+      } else {
+        dispatch(getListPatientForDoctorFailed());
+      }
+    } catch (e) {
+      dispatch(getListPatientForDoctorFailed());
+      console.log(e);
+    }
+  };
+};
+
+export const getListPatientForDoctorSuccess = (patientData) => ({
+  type: actionTypes.GET_LIST_PATIENT_FOR_DOCTOR_SUCCESS,
+  data: patientData,
+});
+
+export const getListPatientForDoctorFailed = () => ({
+  type: actionTypes.GET_LIST_PATIENT_FOR_DOCTOR_FAILED,
 });
